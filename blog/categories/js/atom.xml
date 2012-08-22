@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Randee’s Octopress Blog]]></title>
-  <link href="http://randeeshen.github.com/atom.xml" rel="self"/>
+  <title><![CDATA[Category: JS | Randee’s Octopress Blog]]></title>
+  <link href="http://randeeshen.github.com/blog/categories/js/atom.xml" rel="self"/>
   <link href="http://randeeshen.github.com/"/>
   <updated>2012-08-22T22:21:57+08:00</updated>
   <id>http://randeeshen.github.com/</id>
@@ -630,63 +630,6 @@ Mode</p>
 </code></pre>
 
 <p>严格模式是一个ECMA5标准提出的js子集，禁用了很多js设计中不好的方面，在未来会逐渐成为js的语言标准，详细介绍在<a href="https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Functions_and_function_scope/Strict_mode?redirectlocale=en-US&amp;redirectslug=JavaScript%2FStrict_mode#Changes_in_strict_mode">这里</a></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[友人以上.恋人未满]]></title>
-    <link href="http://randeeshen.github.com/blog/2012/08/16/new-post/"/>
-    <updated>2012-08-16T18:02:00+08:00</updated>
-    <id>http://randeeshen.github.com/blog/2012/08/16/new-post</id>
-    <content type="html"><![CDATA[<p>每个男生身边都有一个不是女朋友的女朋友&#8230; <br/>
-每个女生身边都有一个不是男朋友的男朋友&#8230;<br/>
-你们可能相爱过，也可能喜欢着彼此，<br/>
-但是，为了什么原因你们没能在一起？</p>
-
-<p>也许他为了朋友之间的义气，不能追你。  <br/>
-也许为了顾及家人的意见 ，你们没有在一起。<br/>
-也许为了自己的前程，他没有要你等他。<br/>
-也许是相遇得太早，还不懂得珍惜对方。<br/>
-也许是相遇得太晚，彼此的身边已经有了人在陪着。<br/>
-也许是回头太迟，对方已不再等待。<br/>
-也许是彼此都在捉摸对方的心，而迟迟跨不出界线。</p>
-
-<!--more-->
-
-
-<p>不过，即使没在一起，还是保持了朋友的关系。<br/>
-但是只有自己心底清楚<br/>
-对这个人，你比朋友还多了一份关心、一份疼爱！</p>
-
-<p>即使不能名正言顺的牵着手逛街，还是可以做无所不谈的朋友。<br/>
-他遇到困难时，你会尽你所能的帮他，不会计较谁欠了谁。</p>
-
-<p>每个人这辈子，心中都有过这么一个特别的朋友，<br/>
-不是情侣，单纯得只是朋友。</p>
-
-<p>一开始可能不甘心只做朋友，但久了，突然发现这样最好。<br/>
-因为，没爱过，可以减少彼此的伤痛。</p>
-
-<p>你宁愿这样关心他，总好过在一起而有天会分手。<br/>
-你宁愿做他的朋友，彼此不会吃醋，才可以真的无所不谈。</p>
-
-<p>特别是这样，你还是知道，他永远会关心你的。<br/>
-很多的感情，都因为一厢情愿，最后连朋友都当不成了。</p>
-
-<p>常常觉得惋惜，可惜了一些本来很好的友情，<br/>
-最后却因为对方的一句喜欢你，<br/>
-如果你没有反应，这段友情似乎也难以维持下去，<br/>
-这也难怪有些人会因此不肯踏出这一步。</p>
-
-<p>因为这就像是一场赌注，表白了之后  <br/>
-不是成了男女朋友，就是连朋友都当不成了。</p>
-
-<p>有些事不是自己能预料的，或许对方不在意，<br/>
-你们还可以是朋友，但却已经不如从前了&#8230;&#8230;<br/>
-做不成男女朋友，当他那个特别的朋友，<br/>
-有什么不好呢？</p>
-
-<p>你心中的这个特别的朋友&#8230;? 是谁呢？</p>
 ]]></content>
   </entry>
   
