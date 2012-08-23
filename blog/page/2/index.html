@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Category: JS - Randee’s Octopress Blog</title>
+  <title>Randee’s Octopress Blog</title>
   <meta name="author" content="Randee">
 
   
-  <meta name="description" content="Category: JS">
+  <meta name="description" content="风格是从伟大事物中分离出的美好事物。 &#8211; Bozhidar Batsov 这份指南目的于演示一整套 Rails 3 开发的风格惯例及最佳实践。这是一份与由现存社群所驱动的Ruby 编码风格指南互补的指南。 开发 RAILS 应用程序 配置 把惯用的初始化代码放在 config/ &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://randeeshen.github.comblog/categories/js/">
+  <link rel="canonical" href="http://randeeshen.github.com/blog/page/2/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -62,40 +62,159 @@
 </nav>
   <div id="main">
     <div id="content">
-      <div>
-<article role="article">
+      <div class="blog-index">
   
+  
+  
+    <article>
+      
   <header>
-    <h1 class="entry-title">Category: JS</h1>
+    
+      <h1 class="entry-title"><a href="/blog/2012/06/01/rails-style-guide/">Ruby 社区首推的Rails代码编写风格</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-06-01T21:42:00+08:00" pubdate data-updated="true">Jun 1<span>st</span>, 2012</time>
+        
+      </p>
     
   </header>
-  
-  <div id="blog-archives" class="category">
 
 
+  <div class="entry-content"><h3>风格是从伟大事物中分离出的美好事物。  &#8211; Bozhidar Batsov</h3>
 
-  
-  <h2>2012</h2>
+<p>这份指南目的于演示一整套 Rails 3 开发的风格惯例及最佳实践。这是一份与由现存社群所驱动的Ruby 编码风格指南互补的指南。</p>
 
-<article>
-  
-<h1><a href="/blog/2012/08/22/CoffeeScript/">CoffeeScript 详解</a></h1>
-<time datetime="2012-08-22T10:20:00+08:00" pubdate><span class='month'>Aug</span> <span class='day'>22</span> <span class='year'>2012</span></time>
+<p></br></p>
 
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/js/'>JS</a></span>
-</footer>
+<p><strong>开发 RAILS 应用程序</strong></p>
+
+<h2>配置</h2>
+
+<ul>
+<li>把惯用的初始化代码放在 <code>config/initializers</code>。 在 initializers 内的代码于应用启动时执行。</li>
+<li>跟每一个 gem 相关的初始化代码应当使用同样的名称，放在不同的文件里，如： <code>carrierwave.rb</code>, <code>active_admin.rb</code>, 等等。</li>
+<li><p>相应调整配置开发、测试及生产环境(在 <code>config/environments/</code> 下对应的文件)</p>
+
+<ul>
+<li><p>标记额外的资产给（如有任何）预编译：</p>
+
+<pre><code> # config/environments/production.rb 
+ # Precompile additional assets (application.js, application.css, and all non-JS/CSS are already added)
+
+ config.assets.precompile += %w( rails_admin/rails_admin.css rails_admin/rails_admin.js ) 
+</code></pre></li>
+</ul>
+</li>
+<li><p>创立一个与生产环境相似的额外 staging 环境。</p></li>
+</ul>
 
 
-</article>
+<p></br></p>
 
 </div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2012/06/01/rails-style-guide/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012/06/01/ruby-style-guide/">Ruby 社区首推的ruby代码编写风格</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
 
   
-</article>
+
+
+<time datetime="2012-06-01T10:02:00+08:00" pubdate data-updated="true">Jun 1<span>st</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>格式, 文件格式</h2>
+
+<hr />
+
+<ul>
+<li>使用 UTF-8 作为文件的编码。</li>
+<li>缩进使用两个空格，别用 Tab 格式，Tab将会导致到了其他环境排版混乱。</li>
+<li><p>使用 Unix 的换行格式，(Linux/OSX 用户默认就是这样的，Windows 用户这里要多加注意)，如果你在 Windows 下面，并且使用 Git，可以用下面的方式做调整：</p>
+
+<pre><code>$ git config --global core.autocrlf true 
+</code></pre></li>
+<li><p>在逗号，分号，冒号，运算符号的左右留下一个空格。</p>
+
+<pre><code>sum = 1 + 2 a, b = 1, 2 1 &gt; 2 ? true : false; 
+puts 'Hi' [1, 2, 3].each { |e| puts e } 
+</code></pre>
+
+<p>  唯一的例外是当你在做指数运算的时候，比如：</p>
+
+<pre><code># 不好的
+ e = M * c ** 2  
+
+# 好的
+ e = M * c**2 ``` 
+</code></pre></li>
+<li><p>(, [ 的后面，或 ], ) 的前面别敲空格。</p>
+
+<pre><code>some(arg).other [1, 2, 3].length 
+</code></pre></li>
+<li><p>when 和 case相同缩进。我知道很多人不赞同这点，但这是 &#8220;The Ruby Programming Language&#8221; and &#8220;Programming Ruby&#8221;两本书共同沿袭的风格。</p></li>
+</ul>
+
 
 </div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2012/06/01/ruby-style-guide/">Read on &rarr;</a>
+    </footer>
+  
 
+
+    </article>
+  
+  <div class="pagination">
+    
+    <a href="/blog/archives">Blog Archives</a>
+    
+    <a class="next" href="/">Newer &rarr;</a>
+    
+  </div>
+</div>
 <aside class="sidebar">
   
     <section>
@@ -132,7 +251,6 @@
 
   
 </aside>
-
 
     </div>
   </div>

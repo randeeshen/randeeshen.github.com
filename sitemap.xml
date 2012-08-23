@@ -1,19 +1,59 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <urlset xmlns='http://www.sitemaps.org/schemas/sitemap/0.9'>
     <url>
-        <loc>http://randeeshen.github.com/blog/2012/08/16/new-post/</loc>
-        <lastmod>2012-08-17T00:13:17+08:00</lastmod>
+        <loc>http://randeeshen.github.com/blog/2012/06/01/ruby-style-guide/</loc>
+        <lastmod>2012-08-23T16:56:25+08:00</lastmod>
+    </url>
+    <url>
+        <loc>http://randeeshen.github.com/blog/2012/06/01/rails-style-guide/</loc>
+        <lastmod>2012-08-23T16:57:37+08:00</lastmod>
+    </url>
+    <url>
+        <loc>http://randeeshen.github.com/blog/2012/06/08/rails-skills/</loc>
+        <lastmod>2012-08-23T16:57:47+08:00</lastmod>
+    </url>
+    <url>
+        <loc>http://randeeshen.github.com/blog/2012/06/10/programmers-good-habit/</loc>
+        <lastmod>2012-08-23T16:58:08+08:00</lastmod>
+    </url>
+    <url>
+        <loc>http://randeeshen.github.com/blog/2012/07/04/git-log/</loc>
+        <lastmod>2012-08-23T16:12:27+08:00</lastmod>
+    </url>
+    <url>
+        <loc>http://randeeshen.github.com/blog/2012/07/09/rails-mistakes/</loc>
+        <lastmod>2012-08-23T16:00:42+08:00</lastmod>
+    </url>
+    <url>
+        <loc>http://randeeshen.github.com/blog/2012/07/11/rails-skills/</loc>
+        <lastmod>2012-08-23T15:41:58+08:00</lastmod>
+    </url>
+    <url>
+        <loc>http://randeeshen.github.com/blog/2012/07/11/resque/</loc>
+        <lastmod>2012-08-23T16:10:50+08:00</lastmod>
+    </url>
+    <url>
+        <loc>http://randeeshen.github.com/blog/2012/07/23/devise-email/</loc>
+        <lastmod>2012-08-23T15:59:08+08:00</lastmod>
     </url>
     <url>
         <loc>http://randeeshen.github.com/blog/2012/08/22/CoffeeScript/</loc>
-        <lastmod>2012-08-22T22:14:54+08:00</lastmod>
+        <lastmod>2012-08-22T22:46:53+08:00</lastmod>
+    </url>
+    <url>
+        <loc>http://randeeshen.github.com/blog/2012/08/22/ruby-block/</loc>
+        <lastmod>2012-08-23T15:43:58+08:00</lastmod>
+    </url>
+    <url>
+        <loc>http://randeeshen.github.com/blog/2012/08/23/friendship-love/</loc>
+        <lastmod>2012-08-23T15:50:16+08:00</lastmod>
     </url>
     <url>
         <loc>http://randeeshen.github.com/blog/archives/</loc>
-        <lastmod>2012-08-22T22:14:54+08:00</lastmod>
+        <lastmod>2012-08-23T16:58:08+08:00</lastmod>
     </url>
     <url>
         <loc>http://randeeshen.github.com/</loc>
-        <lastmod>2012-08-22T22:14:54+08:00</lastmod>
+        <lastmod>2012-08-23T16:58:08+08:00</lastmod>
     </url>
 </urlset>

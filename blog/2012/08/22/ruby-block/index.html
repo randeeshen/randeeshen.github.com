@@ -5,14 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>友人以上.恋人未满 - Randee’s Octopress Blog</title>
+  <title>ruby block的用途和理解 - Randee’s Octopress Blog</title>
   <meta name="author" content="Randee">
 
   
-  <meta name="description" content="每个男生身边都有一个不是女朋友的女朋友&#8230; 每个女生身边都有一个不是男朋友的男朋友&#8230;
-你们可能相爱过，也可能喜欢着彼此，
-但是，为了什么原因你们没能在一起？ 也许他为了朋友之间的义气，不能追你。 也许为了顾及家人的意见 ，你们没有在一起。
-也许为了自己的前程，他没有要你等他 &hellip;">
+  <meta name="description" content="常用到的场合： scope 当需要动态参数时: scope :aged_0, lambda{ where("created_at IS NULL OR created_at &lt; ?", Date.today + 30.days).joins(:owner) } scope :aged_1, &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -21,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://randeeshen.github.com/blog/2012/08/16/new-post/">
+  <link rel="canonical" href="http://randeeshen.github.com/blog/2012/08/22/ruby-block/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -70,7 +67,7 @@
   
   <header>
     
-      <h1 class="entry-title">友人以上.恋人未满</h1>
+      <h1 class="entry-title">Ruby Block的用途和理解</h1>
     
     
       <p class="meta">
@@ -86,62 +83,68 @@
   
 
 
-<time datetime="2012-08-16T18:02:00+08:00" pubdate data-updated="true">Aug 16<span>th</span>, 2012</time>
+<time datetime="2012-08-22T10:20:00+08:00" pubdate data-updated="true">Aug 22<span>nd</span>, 2012</time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><p>每个男生身边都有一个不是女朋友的女朋友&#8230; <br/>
-每个女生身边都有一个不是男朋友的男朋友&#8230;<br/>
-你们可能相爱过，也可能喜欢着彼此，<br/>
-但是，为了什么原因你们没能在一起？</p>
+<div class="entry-content"><h2>常用到的场合：</h2>
 
-<p>也许他为了朋友之间的义气，不能追你。  <br/>
-也许为了顾及家人的意见 ，你们没有在一起。<br/>
-也许为了自己的前程，他没有要你等他。<br/>
-也许是相遇得太早，还不懂得珍惜对方。<br/>
-也许是相遇得太晚，彼此的身边已经有了人在陪着。<br/>
-也许是回头太迟，对方已不再等待。<br/>
-也许是彼此都在捉摸对方的心，而迟迟跨不出界线。</p>
+<ol>
+<li><p>scope 当需要动态参数时:</p>
+
+<pre><code>scope :aged_0, lambda{ where("created_at IS NULL OR created_at &lt; ?", Date.today + 30.days).joins(:owner) }  
+scope :aged_1, lambda{ |d_time|where("created_at IS NULL OR created_at &lt; ?", d_time).joins(:owner) }  
+</code></pre></li>
+<li><p>rspec 测试:</p>
+
+<pre><code>lambda{post :create, :user =&gt; @attr}.should_not change(User, :count)
+</code></pre></li>
+</ol>
+
+
+<p>block本质是匿名方法，和<code>hash loop class recursion</code>一样就是一个编程的工具，没有的话程序都可以写，就是特别的场合，有特别适用的地方。 <br/>
+那么，block匿名方法什么时候适用呢？方便理解也举个例子吧，有两组数据，可能要进行不同处理</p>
+
+<pre><code>def cross_loop(array_a, array_b, process)  
+  array_a.each do |element_a|  
+    array_b.each do |element_b|  
+      process.call(element_a, element_b)  
+    end  
+  end  
+end  
+
+cross_loop([1,2,3], [3,4,5], lambda{|x,y| puts x + y})  
+cross_loop([1,2,3], [3,4,5], lambda{|x,y| puts x * y})  
+</code></pre>
 
 <!--more-->
 
 
-<p>不过，即使没在一起，还是保持了朋友的关系。<br/>
-但是只有自己心底清楚<br/>
-对这个人，你比朋友还多了一份关心、一份疼爱！</p>
+<p>说不用lambda行不行，当然，最基本可以在cross_loop里面调用一个函数。只不过重用的时候不好，因为没有process的参数。
+当然，也可以不用lambda又动态传入process，写个process.call然后，再写些process函数也可以。</p>
 
-<p>即使不能名正言顺的牵着手逛街，还是可以做无所不谈的朋友。<br/>
-他遇到困难时，你会尽你所能的帮他，不会计较谁欠了谁。</p>
+<pre><code>def cross_loop(array_a, array_b, process)  
+  array_a.each do |element_a|  
+    array_b.each do |element_b|  
+      self.send(process, element_a, element_b)  
+    end  
+  end  
+end  
 
-<p>每个人这辈子，心中都有过这么一个特别的朋友，<br/>
-不是情侣，单纯得只是朋友。</p>
+def plus(a, b); puts a + b; end  
 
-<p>一开始可能不甘心只做朋友，但久了，突然发现这样最好。<br/>
-因为，没爱过，可以减少彼此的伤痛。</p>
+def multiply(a, b); puts a * b; end  
 
-<p>你宁愿这样关心他，总好过在一起而有天会分手。<br/>
-你宁愿做他的朋友，彼此不会吃醋，才可以真的无所不谈。</p>
+cross_loop([1,2,3], [3,4,5], 'plus')  
+cross_loop([1,2,3], [3,4,5], 'multiply')  
+</code></pre>
 
-<p>特别是这样，你还是知道，他永远会关心你的。<br/>
-很多的感情，都因为一厢情愿，最后连朋友都当不成了。</p>
+<p>只是跟block比，各有所长吧</p>
 
-<p>常常觉得惋惜，可惜了一些本来很好的友情，<br/>
-最后却因为对方的一句喜欢你，<br/>
-如果你没有反应，这段友情似乎也难以维持下去，<br/>
-这也难怪有些人会因此不肯踏出这一步。</p>
-
-<p>因为这就像是一场赌注，表白了之后  <br/>
-不是成了男女朋友，就是连朋友都当不成了。</p>
-
-<p>有些事不是自己能预料的，或许对方不在意，<br/>
-你们还可以是朋友，但却已经不如从前了&#8230;&#8230;<br/>
-做不成男女朋友，当他那个特别的朋友，<br/>
-有什么不好呢？</p>
-
-<p>你心中的这个特别的朋友&#8230;? 是谁呢？</p>
+<p><a href="http://innig.net/software/ruby/closures-in-ruby">关于block和闭包的练习</a></p>
 </div>
 
 
@@ -164,15 +167,21 @@
   
 
 
-<time datetime="2012-08-16T18:02:00+08:00" pubdate data-updated="true">Aug 16<span>th</span>, 2012</time>
+<time datetime="2012-08-22T10:20:00+08:00" pubdate data-updated="true">Aug 22<span>nd</span>, 2012</time>
       
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/ruby/'>Ruby</a>
+  
+</span>
 
 
     </p>
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://randeeshen.github.com/blog/2012/08/16/new-post/" data-via="" data-counturl="http://randeeshen.github.com/blog/2012/08/16/new-post/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://randeeshen.github.com/blog/2012/08/22/ruby-block/" data-via="" data-counturl="http://randeeshen.github.com/blog/2012/08/22/ruby-block/" >Tweet</a>
   
   
   <div class="g-plusone" data-size="medium"></div>
@@ -183,8 +192,10 @@
     
     <p class="meta">
       
+        <a class="basic-alignment left" href="/blog/2012/08/22/CoffeeScript/" title="Previous Post: CoffeeScript 详解">&laquo; CoffeeScript 详解</a>
       
-        <a class="basic-alignment right" href="/blog/2012/08/22/CoffeeScript/" title="Next Post: CoffeeScript 详解">CoffeeScript 详解 &raquo;</a>
+      
+        <a class="basic-alignment right" href="/blog/2012/08/23/friendship-love/" title="Next Post: 友人以上.恋人未满">友人以上.恋人未满 &raquo;</a>
       
     </p>
   </footer>
@@ -205,11 +216,23 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2012/08/23/friendship-love/">友人以上.恋人未满</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/08/22/ruby-block/">ruby block的用途和理解</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2012/08/22/CoffeeScript/">CoffeeScript 详解</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2012/08/16/new-post/">友人以上.恋人未满</a>
+        <a href="/blog/2012/07/23/devise-email/">devise 注册激活邮件</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/07/11/resque/">用 resque 實作背景作業</a>
       </li>
     
   </ul>
@@ -239,8 +262,8 @@
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://randeeshen.github.com/blog/2012/08/16/new-post/';
-        var disqus_url = 'http://randeeshen.github.com/blog/2012/08/16/new-post/';
+        var disqus_identifier = 'http://randeeshen.github.com/blog/2012/08/22/ruby-block/';
+        var disqus_url = 'http://randeeshen.github.com/blog/2012/08/22/ruby-block/';
         var disqus_script = 'embed.js';
       
     (function () {

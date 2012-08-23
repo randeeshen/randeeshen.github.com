@@ -4,7 +4,7 @@
   <title><![CDATA[Category: JS | Randee’s Octopress Blog]]></title>
   <link href="http://randeeshen.github.com/blog/categories/js/atom.xml" rel="self"/>
   <link href="http://randeeshen.github.com/"/>
-  <updated>2012-08-22T22:21:57+08:00</updated>
+  <updated>2012-08-23T17:05:02+08:00</updated>
   <id>http://randeeshen.github.com/</id>
   <author>
     <name><![CDATA[Randee]]></name>
@@ -18,7 +18,9 @@
     <link href="http://randeeshen.github.com/blog/2012/08/22/CoffeeScript/"/>
     <updated>2012-08-22T10:20:00+08:00</updated>
     <id>http://randeeshen.github.com/blog/2012/08/22/CoffeeScript</id>
-    <content type="html"><![CDATA[<h2>序</h2>
+    <content type="html"><![CDATA[<p>CoffeeScript的资源：<a href="http://coffee-js.github.com/coffeescript.cn/">http://coffee-js.github.com/coffeescript.cn/</a></p>
+
+<h2>序</h2>
 
 <p>CoffeeScript是一门简洁的，构架于JavaScript之上的预处理器语言，可以静态编译成JavaScript，语法主要受ruby和python影响，目前已经为众多rails和node项目采用。<br/>
 为什么要用CoffeeScript?</p>

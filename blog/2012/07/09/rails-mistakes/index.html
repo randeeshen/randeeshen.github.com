@@ -1,0 +1,333 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>5个常见的 Rails 开发误区 - Randee’s Octopress Blog</title>
+  <meta name="author" content="Randee">
+
+  
+  <meta name="description" content="在 ITey.com 上看到这篇文章，先mark下来～ 原文这里：http://www.mikeperham.com/2012/05/05/five-common-rails-mistakes 推荐阅读：http://www.iteye.com/news/25074 1. 没有 schema &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://randeeshen.github.com/blog/2012/07/09/rails-mistakes/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Randee’s Octopress Blog" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Randee’s Octopress Blog</a></h1>
+  
+    <h2>A blogging framework for hackers.</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:randeeshen.github.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">5个常见的 Rails 开发误区</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-07-09T14:50:00+08:00" pubdate data-updated="true">Jul 9<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>在 ITey.com 上看到这篇文章，先mark下来～   <br/>
+原文这里：<a href="http://www.mikeperham.com/2012/05/05/five-common-rails-mistakes">http://www.mikeperham.com/2012/05/05/five-common-rails-mistakes</a>  <br/>
+推荐阅读：<a href="http://www.iteye.com/news/25074">http://www.iteye.com/news/25074</a></p>
+
+<h3>1. <a href=""><strong>没有 schema 规范的迁移</strong></a></h3>
+
+<p>  数据模型是应用程序的核心。没有schema的约束，你的数据会因为项目代码上的bugs而慢慢变得糟糕，直到你无法相信库中的任何字段。这里有一个Concact Schema：</p>
+
+<pre><code>create_table "contacts" do |t|
+    t.integer  "user_id"
+    t.string   "name"
+    t.string   "phone"
+    t.string   "email"
+end
+</code></pre>
+
+<p>上面哪些需要更改呢？通常一个Contact必须依附于User，并且会有一个name属性，这可以使用数据库约束来确保。可以添加<code>:null =&gt;false</code>，这样即使验证代码存在bugs，我们依然可以确保模型一致性，因为如果违反了null约束，数据库并不会允许模型保存这些数据。</p>
+
+<pre><code>create_table "contacts" do |t|
+    t.integer  "user_id", :null =&gt; false
+    t.string   "name", :null =&gt; false
+    t.string   "phone"
+    t.string   "email"
+end
+</code></pre>
+
+<p>TIPS：使用“:limit => N”规范你的string类型字段的大小。Strings默认255个字符，而phone字段应该不需要这么长吧！</p>
+
+<!--more-->
+
+
+<h3>2. <a href=""><strong>面向对象编程</strong></a></h3>
+
+<p>大多数Rails开发人员并不写面向对象的代码。他们通常会在项目中写面向MVC的Ruby代码(把模型和控制器分开写在合适的位置)。通常是在lib目录下添加带有类方法的工具模块，仅此而已。但开发人员往往需要花费2-3年才能认识到“Rails就是Ruby。我完全可以创建一些简单的对象，并且不一定按照Rails建议的方式去封装它 们。”</p>
+
+<p>TIPS：对你调用的第三方服务使用facade（外观模式）。通过在测试中提供mock facade，你就不用在你的测试集中真的去调用这些第三方服务了。</p>
+
+<h3>3. <a href=""><strong>在 helpers 中连接HTML</strong></a></h3>
+
+<p>如果你正在创建helper，恭喜，至少说明你正在试图让你的视图层更整洁。但是开发人员经常不知道一些使用helpers创建标签的常见方式，这就导致了槽糕的字符串连接或者糟糕的插值形式。</p>
+
+<pre><code>str = "&lt;li class='vehicle_list'&gt; "
+str += link_to("#{vehicle.title.upcase} Sale", show_all_styles_path(vehicle.id, vehicle.url_title))
+str += " &lt;/li&gt;"
+str.html_safe
+</code></pre>
+
+<p>看吧，相当糟糕，而且容易导致XSS安全漏洞！让 content_tag来拯救这些代码吧。</p>
+
+<pre><code>content_tag :li, :class =&gt; 'vehicle_list' do
+  link_to("#{vehicle.title.upcase} Sale", show_all_styles_path(vehicle.id, vehicle.url_title))
+end
+</code></pre>
+
+<p>TIPS：现在就开始在helper中使用blocks（代码块）吧。当产生内嵌的HTML时，嵌入的blocks更自然、更贴切。</p>
+
+<h3>4. <a href=""><strong>Giant Queries（大查询，比如载入整张表的查询）会把一切都加载到内存</strong></a></h3>
+
+<p>如果你需要修正数据，你只需要遍历并且修正它，对吗？</p>
+
+<pre><code>User.has_purchased(true).each do |customer|
+  customer.grant_role(:customer)
+end
+</code></pre>
+
+<p>假设你有个百万级别客户的电商网站，假设每个用户对象需要500字节，上面的代码会在运行的时候消耗500M内存。</p>
+
+<p>下面是更好的方式：</p>
+
+<pre><code>User.has_purchased(true).find_each do |customer|
+  customer.grant_role(:customer)
+end
+</code></pre>
+
+<p><code>find_each</code>使用 <code>find_in_batches</code>每次取出1000条记录，非常有效的降低了对内存的需求。</p>
+
+<p>TIPS：使用 <code>update_all</code> 或者原始 SQL语句执行大的更新操作。学习SQL可能需要花费点时间，不过带来的好处是明显的：你会看到100x的性能改善。</p>
+
+<h3>5. <a href=""><strong>代码审查</strong></a></h3>
+
+<p>我猜你会使用GitHub，并且我进一步猜测你不会去pull requests（GitHub上的申请代码合并操作）。如果你需要花费一到两天去构建一个新特性， 那么到一个分支上去做吧，然后发送一个pull request。团队会审查你的代码，并且给出一些你没有考虑到的改进或者最新特性的建议。 我保证这样会提高你的代码质量。我们在TheClymb项目中90%的改动都是通过这种方式完成的，并且这是100%值得去做的一个经验。</p>
+
+<p>TIPS：不要没有经过任何测试就合并你的pull request。测试对保证应用的稳定性非常有价值，并且可以让你踏实地睡一个好觉。</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Randee</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-07-09T14:50:00+08:00" pubdate data-updated="true">Jul 9<span>th</span>, 2012</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/rails/'>Rails</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://randeeshen.github.com/blog/2012/07/09/rails-mistakes/" data-via="" data-counturl="http://randeeshen.github.com/blog/2012/07/09/rails-mistakes/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2012/07/04/git-log/" title="Previous Post: Git显示漂亮日志的小技巧">&laquo; Git显示漂亮日志的小技巧</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2012/07/11/rails-skills/" title="Next Post: 一些常用的小技巧">一些常用的小技巧 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2012/08/23/friendship-love/">友人以上.恋人未满</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/08/22/ruby-block/">ruby block的用途和理解</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/08/22/CoffeeScript/">CoffeeScript 详解</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/07/23/devise-email/">devise 注册激活邮件</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/07/11/resque/">用 resque 實作背景作業</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2012 - Randee -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'randee';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://randeeshen.github.com/blog/2012/07/09/rails-mistakes/';
+        var disqus_url = 'http://randeeshen.github.com/blog/2012/07/09/rails-mistakes/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,330 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>一些常用的小技巧 - Randee’s Octopress Blog</title>
+  <meta name="author" content="Randee">
+
+  
+  <meta name="description" content="学ruby最大感受是内建的方法非常好用，大部分简单的操作都可以一行搞定。不过也因为内建方法比较多，所以很多都是用的时候才查的，目前还不是很熟。时不时都看别人的代码，才发现自己之前写的代码里很多用内建的方法就可以很轻易的搞定，于是每次修改时都可以delete一大段代码&#8230; 下面收集一些例子 &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://randeeshen.github.com/blog/2012/07/11/rails-skills/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Randee’s Octopress Blog" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Randee’s Octopress Blog</a></h1>
+  
+    <h2>A blogging framework for hackers.</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:randeeshen.github.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">一些常用的小技巧</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-07-11T00:20:00+08:00" pubdate data-updated="true">Jul 11<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>学ruby最大感受是内建的方法非常好用，大部分简单的操作都可以一行搞定。不过也因为内建方法比较多，所以很多都是用的时候才查的，目前还不是很熟。时不时都看别人的代码，才发现自己之前写的代码里很多用内建的方法就可以很轻易的搞定，于是每次修改时都可以delete一大段代码&#8230;</p>
+
+<h3><a href="http://stackoverflow.com/questions/63998/hidden-features-of-ruby">下面收集一些例子，还是很有用的</a>。</h3>
+
+<p></br></p>
+
+<ul>
+<li><p>好处是不用处理斜杠了</p>
+
+<p>  #=> bin/ruby/gem.rb
+  File.join(&#8220;lib/&#8221;,&#8221;ruby&#8221;,&#8221;gem.rb&#8221;)</p></li>
+<li><p>定义灵活的方法参数时经常用到</p>
+
+<p>  def print_args(a)</p>
+
+<pre><code>  Array(a).each {|i| print i}
+</code></pre>
+
+<p>  end
+  print_args [1,2,3] #=> 123
+  print_args 1 #=> 1</p></li>
+</ul>
+
+
+<!--more-->
+
+
+<ul>
+<li><p>可用于代替简单的代码块</p>
+
+<p>  #=> [&#8220;A&#8221;, &#8220;B&#8221;, &#8220;C&#8221;]
+  %w(a b c).map &amp;:upcase</p></li>
+<li><p>用于组合字符串</p>
+
+<p>  [&#8220;ruby&#8221;,&#8221;on&#8221;,&#8221;rails&#8221;].join(&#8221; &#8220;)</p></li>
+<li><p>将Array按顺序转换为Hash的键值</p>
+
+<p>  ary = [&#8220;a&#8221;,1,&#8221;b&#8221;,2]
+  Hash[*ary]  #=> {&#8220;a&#8221;=>1, &#8220;b&#8221;=>2}</p></li>
+<li><p>选取位置是3倍数的字母</p>
+
+<p>  #=> [&#8220;c&#8221;, &#8220;f&#8221;, &#8220;i&#8221;, &#8220;l&#8221;, &#8220;o&#8221;, &#8220;r&#8221;, &#8220;u&#8221;, &#8220;x&#8221;]
+  Array(&#8220;a&#8221;..&#8221;z&#8221;).select.with_index {|x,i| i%3 == 2}</p></li>
+<li><p>清理数组</p>
+
+<p>  [&#8216;a&#8217;, &#8216;b&#8217;, &#8221;, nil, &#8216;c&#8217;, &#8216;c&#8217;].compact.uniq
+  => [&#8220;a&#8221;, &#8220;b&#8221;, &#8220;&#8221;, &#8220;c&#8221;]</p></li>
+<li><p>&#8230;..</p>
+
+<p>  (1..10).to_a
+  => [1,2,3,4,5,6,7,8,9,10]</p></li>
+<li><p>split是可以传两个参数的..</p>
+
+<p>  &#8220;hello&#8221;.split(&#8220;&#8221;, 2)
+   => [&#8220;h&#8221;, &#8220;ello&#8221;]</p></li>
+<li><p>zip是可以接受block的，不需要each&#8230;</p>
+
+<p>  [1,2,3].zip([4,5,6], [7,8,9]){|x| p x}
+  [1, 4, 7]
+  [2, 5, 8]
+  [3, 6, 9]</p></li>
+<li><p>%W是可以内插的～</p>
+
+<p>  item = 123
+   => 123
+  ree-1.8.7-2011.03 :023 > %W(1 2 3 4 #{item})
+   => [&#8220;1&#8221;, &#8220;2&#8221;, &#8220;3&#8221;, &#8220;4&#8221;, &#8220;123&#8221;]</p></li>
+<li><p>%w(a b c).map &amp;:upcase <br/>
+全写是%w(a b c).map{ |obj| obj.upcase } <br/>
+&amp;表示后面要接一个Proc对象，&amp;a_proc展开充当前面方法的代码块，如果&amp;后面不是Proc对象，则调用其to_proc方法看看能不能生成一个Proc实例核心类里有to_proc方法的是Proc、Method和Symbol，这里就是:upcase.to_proc的效果</p></li>
+</ul>
+
+
+<p>实际生成这样的代码块：</p>
+
+<pre><code>1 :upcase.to_proc
+2 {|obj,*args| obj.send(:upcase, *args) }
+3 {|obj| obj.send(:upcase) }
+4 {|obj| obj.upcase }
+</code></pre>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Randee</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-07-11T00:20:00+08:00" pubdate data-updated="true">Jul 11<span>th</span>, 2012</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/rails/'>Rails</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://randeeshen.github.com/blog/2012/07/11/rails-skills/" data-via="" data-counturl="http://randeeshen.github.com/blog/2012/07/11/rails-skills/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2012/07/09/rails-mistakes/" title="Previous Post: 5个常见的 Rails 开发误区">&laquo; 5个常见的 Rails 开发误区</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2012/07/11/resque/" title="Next Post: 用 resque 實作背景作業">用 resque 實作背景作業 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2012/08/23/friendship-love/">友人以上.恋人未满</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/08/22/ruby-block/">ruby block的用途和理解</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/08/22/CoffeeScript/">CoffeeScript 详解</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/07/23/devise-email/">devise 注册激活邮件</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/07/11/resque/">用 resque 實作背景作業</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2012 - Randee -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'randee';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://randeeshen.github.com/blog/2012/07/11/rails-skills/';
+        var disqus_url = 'http://randeeshen.github.com/blog/2012/07/11/rails-skills/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

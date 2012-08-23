@@ -9,8 +9,10 @@
   <meta name="author" content="Randee">
 
   
-  <meta name="description" content="序 CoffeeScript是一门简洁的，构架于JavaScript之上的预处理器语言，可以静态编译成JavaScript，语法主要受ruby和python影响，目前已经为众多rails和node项目采用。
-为什么要用CoffeeScript? 更少，更紧凑，和更清晰的代码 &hellip;">
+  <meta name="description" content="每个男生身边都有一个不是女朋友的女朋友&#8230; 每个女生身边都有一个不是男朋友的男朋友&#8230;
+你们可能相爱过，也可能喜欢着彼此，
+但是，为了什么原因你们没能在一起？ 也许他为了朋友之间的义气，不能追你。 也许为了顾及家人的意见 ，你们没有在一起。
+也许为了自己的前程，他没有要你等他 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -71,6 +73,127 @@
       
   <header>
     
+      <h1 class="entry-title"><a href="/blog/2012/08/23/friendship-love/">友人以上.恋人未满</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-08-23T15:51:00+08:00" pubdate data-updated="true">Aug 23<span>rd</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>每个男生身边都有一个不是女朋友的女朋友&#8230; <br/>
+每个女生身边都有一个不是男朋友的男朋友&#8230;<br/>
+你们可能相爱过，也可能喜欢着彼此，<br/>
+但是，为了什么原因你们没能在一起？</p>
+
+<p>也许他为了朋友之间的义气，不能追你。  <br/>
+也许为了顾及家人的意见 ，你们没有在一起。<br/>
+也许为了自己的前程，他没有要你等他。<br/>
+也许是相遇得太早，还不懂得珍惜对方。<br/>
+也许是相遇得太晚，彼此的身边已经有了人在陪着。<br/>
+也许是回头太迟，对方已不再等待。<br/>
+也许是彼此都在捉摸对方的心，而迟迟跨不出界线。</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2012/08/23/friendship-love/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012/08/22/ruby-block/">Ruby Block的用途和理解</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-08-22T10:20:00+08:00" pubdate data-updated="true">Aug 22<span>nd</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>常用到的场合：</h2>
+
+<ol>
+<li><p>scope 当需要动态参数时:</p>
+
+<pre><code>scope :aged_0, lambda{ where("created_at IS NULL OR created_at &lt; ?", Date.today + 30.days).joins(:owner) }  
+scope :aged_1, lambda{ |d_time|where("created_at IS NULL OR created_at &lt; ?", d_time).joins(:owner) }  
+</code></pre></li>
+<li><p>rspec 测试:</p>
+
+<pre><code>lambda{post :create, :user =&gt; @attr}.should_not change(User, :count)
+</code></pre></li>
+</ol>
+
+
+<p>block本质是匿名方法，和<code>hash loop class recursion</code>一样就是一个编程的工具，没有的话程序都可以写，就是特别的场合，有特别适用的地方。 <br/>
+那么，block匿名方法什么时候适用呢？方便理解也举个例子吧，有两组数据，可能要进行不同处理</p>
+
+<pre><code>def cross_loop(array_a, array_b, process)  
+  array_a.each do |element_a|  
+    array_b.each do |element_b|  
+      process.call(element_a, element_b)  
+    end  
+  end  
+end  
+
+cross_loop([1,2,3], [3,4,5], lambda{|x,y| puts x + y})  
+cross_loop([1,2,3], [3,4,5], lambda{|x,y| puts x * y})  
+</code></pre>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2012/08/22/ruby-block/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
       <h1 class="entry-title"><a href="/blog/2012/08/22/CoffeeScript/">CoffeeScript 详解</a></h1>
     
     
@@ -94,7 +217,9 @@
   </header>
 
 
-  <div class="entry-content"><h2>序</h2>
+  <div class="entry-content"><p>CoffeeScript的资源：<a href="http://coffee-js.github.com/coffeescript.cn/">http://coffee-js.github.com/coffeescript.cn/</a></p>
+
+<h2>序</h2>
 
 <p>CoffeeScript是一门简洁的，构架于JavaScript之上的预处理器语言，可以静态编译成JavaScript，语法主要受ruby和python影响，目前已经为众多rails和node项目采用。<br/>
 为什么要用CoffeeScript?</p>
@@ -125,7 +250,7 @@
       
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2012/08/16/new-post/">友人以上.恋人未满</a></h1>
+      <h1 class="entry-title"><a href="/blog/2012/07/23/devise-email/">Devise 注册激活邮件</a></h1>
     
     
       <p class="meta">
@@ -141,31 +266,422 @@
   
 
 
-<time datetime="2012-08-16T18:02:00+08:00" pubdate data-updated="true">Aug 16<span>th</span>, 2012</time>
+<time datetime="2012-07-23T11:08:00+08:00" pubdate data-updated="true">Jul 23<span>rd</span>, 2012</time>
         
       </p>
     
   </header>
 
 
-  <div class="entry-content"><p>每个男生身边都有一个不是女朋友的女朋友&#8230; <br/>
-每个女生身边都有一个不是男朋友的男朋友&#8230;<br/>
-你们可能相爱过，也可能喜欢着彼此，<br/>
-但是，为了什么原因你们没能在一起？</p>
+  <div class="entry-content"><h2>User 添加cofirmable lockable</h2>
 
-<p>也许他为了朋友之间的义气，不能追你。  <br/>
-也许为了顾及家人的意见 ，你们没有在一起。<br/>
-也许为了自己的前程，他没有要你等他。<br/>
-也许是相遇得太早，还不懂得珍惜对方。<br/>
-也许是相遇得太晚，彼此的身边已经有了人在陪着。<br/>
-也许是回头太迟，对方已不再等待。<br/>
-也许是彼此都在捉摸对方的心，而迟迟跨不出界线。</p>
+<ul>
+<li><p>app/models/user.rb</p>
+
+<pre><code>devise :database_authenticatable, :registerable, :recoverable,
+       :rememberable, :trackable, :validatable,
+       :confirmable, :lockable    #添加这一行
+</code></pre></li>
+<li><p>db/migrate/20120206xxxxxx_devise_create_users.rb</p>
+
+<pre><code># 添加
+t.string   :confirmation_token
+t.datetime :confirmed_at
+t.datetime :confirmation_sent_at
+t.string   :unconfirmed_email # Only if using reconfirmable
+t.integer  :failed_attempts, :default =&gt; 0 # Only if lock strategy is :failed_attempts
+t.string   :unlock_token  # Only if unlock strategy is :email or :both
+t.datetime :locked_at
+
+add_index :users, :confirmation_token,   :unique =&gt; true
+add_index :users, :unlock_token,         :unique =&gt; true
+</code></pre></li>
+</ul>
+
 
 </div>
   
   
     <footer>
-      <a rel="full-article" href="/blog/2012/08/16/new-post/">Read on &rarr;</a>
+      <a rel="full-article" href="/blog/2012/07/23/devise-email/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012/07/11/resque/">用 Resque 實作背景作業</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-07-11T08:20:00+08:00" pubdate data-updated="true">Jul 11<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>用 resque 實作背景作業 (前置設定篇)</h2>
+
+<p>resque 是一套可以用來實作 background job 的 gem，舉凡長時間的執行如 email，點數計算等等非即時性的工作，都可以採用非同步執行， 以加速前端服務的反應速度。  <br/>
+resque 是以 redis 做為 message queue server 的方式來進行…</p>
+
+<p>參考連結</p>
+
+<p>RailsCast - 影片: <a href="http://railscasts.com/episodes/271-resque">Resque</a><br/>
+RailsCast - 文字: <a href="http://railscasts.com/episodes/271-resque?view=asciicast">Resque</a>  <br/>
+官方文件: <a href="https://github.com/defunkt/resque">Github</a></p>
+
+<p>安裝 Gem</p>
+
+<pre><code># Gemfile
+gem "resque"
+
+bundle install
+</code></pre>
+
+<h4>安裝 redis</h4>
+
+<pre><code>#MacOS
+brew install redis
+
+#Debian / Ubuntu
+sudo apt-get install redis-server
+</code></pre>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2012/07/11/resque/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012/07/11/rails-skills/">一些常用的小技巧</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-07-11T00:20:00+08:00" pubdate data-updated="true">Jul 11<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>学ruby最大感受是内建的方法非常好用，大部分简单的操作都可以一行搞定。不过也因为内建方法比较多，所以很多都是用的时候才查的，目前还不是很熟。时不时都看别人的代码，才发现自己之前写的代码里很多用内建的方法就可以很轻易的搞定，于是每次修改时都可以delete一大段代码&#8230;</p>
+
+<h3><a href="http://stackoverflow.com/questions/63998/hidden-features-of-ruby">下面收集一些例子，还是很有用的</a>。</h3>
+
+<p></br></p>
+
+<ul>
+<li><p>好处是不用处理斜杠了</p>
+
+<p>  #=> bin/ruby/gem.rb
+  File.join(&#8220;lib/&#8221;,&#8221;ruby&#8221;,&#8221;gem.rb&#8221;)</p></li>
+<li><p>定义灵活的方法参数时经常用到</p>
+
+<p>  def print_args(a)</p>
+
+<pre><code>  Array(a).each {|i| print i}
+</code></pre>
+
+<p>  end
+  print_args [1,2,3] #=> 123
+  print_args 1 #=> 1</p></li>
+</ul>
+
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2012/07/11/rails-skills/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012/07/09/rails-mistakes/">5个常见的 Rails 开发误区</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-07-09T14:50:00+08:00" pubdate data-updated="true">Jul 9<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>在 ITey.com 上看到这篇文章，先mark下来～   <br/>
+原文这里：<a href="http://www.mikeperham.com/2012/05/05/five-common-rails-mistakes">http://www.mikeperham.com/2012/05/05/five-common-rails-mistakes</a>  <br/>
+推荐阅读：<a href="http://www.iteye.com/news/25074">http://www.iteye.com/news/25074</a></p>
+
+<h3>1. <a href=""><strong>没有 schema 规范的迁移</strong></a></h3>
+
+<p>  数据模型是应用程序的核心。没有schema的约束，你的数据会因为项目代码上的bugs而慢慢变得糟糕，直到你无法相信库中的任何字段。这里有一个Concact Schema：</p>
+
+<pre><code>create_table "contacts" do |t|
+    t.integer  "user_id"
+    t.string   "name"
+    t.string   "phone"
+    t.string   "email"
+end
+</code></pre>
+
+<p>上面哪些需要更改呢？通常一个Contact必须依附于User，并且会有一个name属性，这可以使用数据库约束来确保。可以添加<code>:null =&gt;false</code>，这样即使验证代码存在bugs，我们依然可以确保模型一致性，因为如果违反了null约束，数据库并不会允许模型保存这些数据。</p>
+
+<pre><code>create_table "contacts" do |t|
+    t.integer  "user_id", :null =&gt; false
+    t.string   "name", :null =&gt; false
+    t.string   "phone"
+    t.string   "email"
+end
+</code></pre>
+
+<p>TIPS：使用“:limit => N”规范你的string类型字段的大小。Strings默认255个字符，而phone字段应该不需要这么长吧！</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2012/07/09/rails-mistakes/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012/07/04/git-log/">Git显示漂亮日志的小技巧</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-07-04T17:05:00+08:00" pubdate data-updated="true">Jul 4<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>在网上无意中看到这篇文章，决定copy下来&#8211;XD&#8230;   <br/>
+原文：<a href="http://garmoncheg.blogspot.com/2012/06/pretty-git-log.html">http://garmoncheg.blogspot.com/2012/06/pretty-git-log.html</a> （墙）</p>
+
+<p>Git的传统log如下所示，你稀饭吗？</p>
+
+<p><img src="/images/2012-07-04-git-log.png" alt="Alt text" /></p>
+
+<p>看看下面这个你稀不稀饭？</p>
+
+<p><img src="/images/2012-07-04-git-lg.png" alt="Alt text" /></p>
+
+<p>要做到这样，命令行如下：</p>
+
+<pre><code>git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)&lt;%an&gt;%Creset' --abbrev-commit --   
+</code></pre>
+
+<p>这样有点长了，我们可以这样：</p>
+
+<pre><code>git config --global alias.lg "log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)&lt;%an&gt;%Creset' --abbrev-commit --"  
+</code></pre>
+
+<p>然后，我们就可以使用下面的命令查看git日志了：</p>
+
+<pre><code>git lg
+</code></pre>
+
+<p>如果你想看看<code>git log
+–pretty=format</code>的参数，你可以看看
+<a href="http://git-scm.com/book/zh/Git-%E5%9F%BA%E7%A1%80-%E6%9F%A5%E7%9C%8B%E6%8F%90%E4%BA%A4%E5%8E%86%E5%8F%B2"><em>这篇文章</em></a>。</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012/06/10/programmers-good-habit/">优秀程序员的十个习惯</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-06-10T19:23:00+08:00" pubdate data-updated="true">Jun 10<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><blockquote><p>本文来源于<a href="http://coolshell.cn/articles/222.html">酷壳网</a>！</p></blockquote>
+
+<p>在这个世界上，有数百万的人热衷于软件开发，他们有很多名字，如：软件工程师，程序员，编码人，开发人员。经过一段时间后，这些人也许能够成为一个优秀的编码人员，他们会非常熟悉如何用计算机语言来完成自己的工作。但是，如果你要成为一个优秀的程序员，你还需要注意几件事，如果你能让下百十上条目成为你的习惯，那么你才能真正算得上是优秀程序员。</p>
+
+<ol>
+<li><p><a href=""><strong>学无止境。</strong></a>
+就算是你有了10年以上的程序员经历，你也得要使劲地学习，因为你在计算机这个充满一创造力的领域，每天都会有很多很多的新事物出现。你需要跟上时代的步伐。你需要去了解新的程序语言，以及了解正在发展中的程序语言，以及一些编程框架。还需要去阅读一些业内的新闻，并到一些热门的社区去参与在线的讨论，这样你才能明白和了解整个软件开发的趋势。在国内，一些著名的社区例如：CSDN，ITPUB，CHINAUINX等等，在国外，建议你经常上一上digg.com去看看各种BLOG的聚合。</p></li>
+<li><p><a href=""><strong>掌握多种语言。</strong></a>
+程序语言总是有其最适合的领域。当你面对需要解决的问题时，你需要找到一个最适合的语言来解决这些问题。比如，如果你需要性能，可能C/C++是首选，如果你需要跨平台，可能Java是首选，如果你要写一个Web上的开发程序，那么PHP，ASP，Ajax，JSP可能会是你的选择，如果你要处理一些文本并和别的应用交互，可能Perl，Python会是最好的。所以，花一些时间去探索一下其它你并熟悉的程序语言，能让你的眼界变宽，因为你被武装得更好，你思考问题也就更为全面，这对于自己和项目都会有好的帮助。</p></li>
+</ol>
+
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2012/06/10/programmers-good-habit/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012/06/08/rails-skills/">42 个你不知道的 Rails 技巧</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-06-08T18:02:00+08:00" pubdate data-updated="true">Jun 8<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>The Database</h2>
+
+<h3>Tip 1: Run From A Single File 可以单文件运行</h3>
+
+<p><a href="https://github.com/artemave/thesmallestrailsapp.com"><em>source</em></a></p>
+
+<pre><code>%w(action_controller/railtie coderay).map &amp;method(:require)
+
+run TheSmallestRailsApp ||= Class.new(Rails::Application) {
+  config.secret_token = routes.append { root to: 'hello#world' }.inspect
+  initialize!
+}
+
+class HelloController &lt; ActionController::Base
+  def world
+    render inline: "
+      &lt;!DOCTYPE html&gt;
+      &lt;title&gt;The Smallest Rails App&lt;/title&gt;
+      &lt;h3&gt;I am the smallest rails app!&lt;/h3&gt;
+      &lt;p&gt;Here is my source code:&lt;/p&gt;
+      #{CodeRay.scan_file(__FILE__, :ruby).div(line_numbers: :table)}
+      &lt;a href='https://github.com/artemave/thesmallestrailsapp.com'&gt;Make me smaller&lt;/a&gt;
+    "
+  end
+end
+</code></pre>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2012/06/08/rails-skills/">Read on &rarr;</a>
     </footer>
   
 
@@ -173,6 +689,8 @@
     </article>
   
   <div class="pagination">
+    
+      <a class="prev" href="/blog/page/2/">&larr; Older</a>
     
     <a href="/blog/archives">Blog Archives</a>
     
@@ -185,11 +703,23 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2012/08/23/friendship-love/">友人以上.恋人未满</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/08/22/ruby-block/">ruby block的用途和理解</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2012/08/22/CoffeeScript/">CoffeeScript 详解</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2012/08/16/new-post/">友人以上.恋人未满</a>
+        <a href="/blog/2012/07/23/devise-email/">devise 注册激活邮件</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/07/11/resque/">用 resque 實作背景作業</a>
       </li>
     
   </ul>

@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Category: JS - Randee’s Octopress Blog</title>
+  <title>devise 注册激活邮件 - Randee’s Octopress Blog</title>
   <meta name="author" content="Randee">
 
   
-  <meta name="description" content="Category: JS">
+  <meta name="description" content="User 添加cofirmable lockable app/models/user.rb devise :database_authenticatable, :registerable, :recoverable, :rememberable, :trackable, :validatable &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://randeeshen.github.comblog/categories/js/">
+  <link rel="canonical" href="http://randeeshen.github.com/blog/2012/07/23/devise-email/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -63,36 +63,150 @@
   <div id="main">
     <div id="content">
       <div>
-<article role="article">
+<article class="hentry" role="article">
   
   <header>
-    <h1 class="entry-title">Category: JS</h1>
+    
+      <h1 class="entry-title">Devise 注册激活邮件</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-07-23T11:08:00+08:00" pubdate data-updated="true">Jul 23<span>rd</span>, 2012</time>
+        
+      </p>
     
   </header>
-  
-  <div id="blog-archives" class="category">
 
 
+<div class="entry-content"><h2>User 添加cofirmable lockable</h2>
 
-  
-  <h2>2012</h2>
+<ul>
+<li><p>app/models/user.rb</p>
 
-<article>
-  
-<h1><a href="/blog/2012/08/22/CoffeeScript/">CoffeeScript 详解</a></h1>
-<time datetime="2012-08-22T10:20:00+08:00" pubdate><span class='month'>Aug</span> <span class='day'>22</span> <span class='year'>2012</span></time>
+<pre><code>devise :database_authenticatable, :registerable, :recoverable,
+       :rememberable, :trackable, :validatable,
+       :confirmable, :lockable    #添加这一行
+</code></pre></li>
+<li><p>db/migrate/20120206xxxxxx_devise_create_users.rb</p>
 
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/js/'>JS</a></span>
-</footer>
+<pre><code># 添加
+t.string   :confirmation_token
+t.datetime :confirmed_at
+t.datetime :confirmation_sent_at
+t.string   :unconfirmed_email # Only if using reconfirmable
+t.integer  :failed_attempts, :default =&gt; 0 # Only if lock strategy is :failed_attempts
+t.string   :unlock_token  # Only if unlock strategy is :email or :both
+t.datetime :locked_at
+
+add_index :users, :confirmation_token,   :unique =&gt; true
+add_index :users, :unlock_token,         :unique =&gt; true
+</code></pre></li>
+</ul>
 
 
-</article>
+<!--more-->
+
+
+<h2>配置邮件服务器</h2>
+
+<ul>
+<li><p>config/initializers/devise.rb</p>
+
+<pre><code>config.mailer_sender = "randeeshen@gmail.com"
+config.mailer = "Devise::Mailer"
+</code></pre></li>
+<li><p>config/environments/development.rb</p>
+
+<pre><code>config.action_mailer.perform_deliveries = true
+
+config.action_mailer.default_url_options = { :host =&gt; 'localhost:3000' }
+
+config.action_mailer.delivery_method = :smtp
+config.action_mailer.smtp_settings = {
+  :address=&gt; "smtp.gmail.com",
+  :port=&gt; 587,
+  :domain=&gt; "gmail.com",
+  :authentication=&gt; 'plain',
+  :user_name=&gt; "randeeshen3@gmail.com",
+  :password=&gt; "YOUR PASSWORD",
+  :enable_starttls_auto =&gt; true
+}
+</code></pre></li>
+</ul>
 
 </div>
 
+
+  <footer>
+    <p class="meta">
+      
   
+
+<span class="byline author vcard">Posted by <span class="fn">Randee</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-07-23T11:08:00+08:00" pubdate data-updated="true">Jul 23<span>rd</span>, 2012</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/gem/'>Gem</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://randeeshen.github.com/blog/2012/07/23/devise-email/" data-via="" data-counturl="http://randeeshen.github.com/blog/2012/07/23/devise-email/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2012/07/11/resque/" title="Previous Post: 用 resque 實作背景作業">&laquo; 用 resque 實作背景作業</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2012/08/22/CoffeeScript/" title="Next Post: CoffeeScript 详解">CoffeeScript 详解 &raquo;</a>
+      
+    </p>
+  </footer>
 </article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
 
 </div>
 
@@ -148,7 +262,10 @@
       var disqus_shortname = 'randee';
       
         
-        var disqus_script = 'count.js';
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://randeeshen.github.com/blog/2012/07/23/devise-email/';
+        var disqus_url = 'http://randeeshen.github.com/blog/2012/07/23/devise-email/';
+        var disqus_script = 'embed.js';
       
     (function () {
       var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;

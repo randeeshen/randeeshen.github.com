@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Gem | Randee’s Octopress Blog]]></title>
+  <link href="http://randeeshen.github.com/blog/categories/gem/atom.xml" rel="self"/>
+  <link href="http://randeeshen.github.com/"/>
+  <updated>2012-08-23T17:05:02+08:00</updated>
+  <id>http://randeeshen.github.com/</id>
+  <author>
+    <name><![CDATA[Randee]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[devise 注册激活邮件]]></title>
+    <link href="http://randeeshen.github.com/blog/2012/07/23/devise-email/"/>
+    <updated>2012-07-23T11:08:00+08:00</updated>
+    <id>http://randeeshen.github.com/blog/2012/07/23/devise-email</id>
+    <content type="html"><![CDATA[<h2>User 添加cofirmable lockable</h2>
+
+<ul>
+<li><p>app/models/user.rb</p>
+
+<pre><code>devise :database_authenticatable, :registerable, :recoverable,
+       :rememberable, :trackable, :validatable,
+       :confirmable, :lockable    #添加这一行
+</code></pre></li>
+<li><p>db/migrate/20120206xxxxxx_devise_create_users.rb</p>
+
+<pre><code># 添加
+t.string   :confirmation_token
+t.datetime :confirmed_at
+t.datetime :confirmation_sent_at
+t.string   :unconfirmed_email # Only if using reconfirmable
+t.integer  :failed_attempts, :default =&gt; 0 # Only if lock strategy is :failed_attempts
+t.string   :unlock_token  # Only if unlock strategy is :email or :both
+t.datetime :locked_at
+
+add_index :users, :confirmation_token,   :unique =&gt; true
+add_index :users, :unlock_token,         :unique =&gt; true
+</code></pre></li>
+</ul>
+
+
+<!--more-->
+
+
+<h2>配置邮件服务器</h2>
+
+<ul>
+<li><p>config/initializers/devise.rb</p>
+
+<pre><code>config.mailer_sender = "randeeshen@gmail.com"
+config.mailer = "Devise::Mailer"
+</code></pre></li>
+<li><p>config/environments/development.rb</p>
+
+<pre><code>config.action_mailer.perform_deliveries = true
+
+config.action_mailer.default_url_options = { :host =&gt; 'localhost:3000' }
+
+config.action_mailer.delivery_method = :smtp
+config.action_mailer.smtp_settings = {
+  :address=&gt; "smtp.gmail.com",
+  :port=&gt; 587,
+  :domain=&gt; "gmail.com",
+  :authentication=&gt; 'plain',
+  :user_name=&gt; "randeeshen3@gmail.com",
+  :password=&gt; "YOUR PASSWORD",
+  :enable_starttls_auto =&gt; true
+}
+</code></pre></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+</feed>
