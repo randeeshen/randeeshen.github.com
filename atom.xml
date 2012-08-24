@@ -4,7 +4,7 @@
   <title><![CDATA[Randee’s Octopress Blog]]></title>
   <link href="http://randeeshen.github.com/atom.xml" rel="self"/>
   <link href="http://randeeshen.github.com/"/>
-  <updated>2012-08-23T17:05:02+08:00</updated>
+  <updated>2012-08-25T05:42:21+08:00</updated>
   <id>http://randeeshen.github.com/</id>
   <author>
     <name><![CDATA[Randee]]></name>
@@ -12,6 +12,459 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Rails中获取url信息的一些方法]]></title>
+    <link href="http://randeeshen.github.com/blog/2012/08/25/rails-url-method/"/>
+    <updated>2012-08-25T04:10:00+08:00</updated>
+    <id>http://randeeshen.github.com/blog/2012/08/25/rails-url-method</id>
+    <content type="html"><![CDATA[<p>如本机我测试域名为:  <a href=":;javascripts">test.blog.zool.it:3000</a></p>
+
+<p>打开的uri为:  <a href=":;javascripts">/post/Hello-World</a></p>
+
+<p>fullurl为:  <a href=":;javascripts">http://test.blog.zool.it:3000/post/Hello-world</a></p>
+
+<p>则rails的路由生成一下几个方法</p>
+
+<p><code>domain(tld_length = 1)</code> 取得域名</p>
+
+<pre><code>request.domain #=&gt; zool.it request.domain(2) #=&gt; blog.zool.it 
+</code></pre>
+
+<p><code>subdomain(tld_length = 1)</code>, <code>subdomains(tld_length = 1)</code> 取得子域名</p>
+
+<pre><code>request.subdomain #=&gt; "test.blog" request.subdomain(2) #=&gt; "test"
+request.subdomains #=&gt; ["test", "blog"] request.subdomains(2) #=&gt; ["test"] 
+</code></pre>
+
+<p><code>host()</code> 取得主机名</p>
+
+<pre><code>request.host #=&gt; "test.blog.zool.it" 
+</code></pre>
+
+<p><code>host_with_port()</code> 取得带端口的主机名</p>
+
+<pre><code>request.host_with_port #=&gt; "test.blog.zool.it:3000" 
+</code></pre>
+
+<!--more-->
+
+
+<p><code>raw_host_with_port()</code> 代理服务器的主机名和端口</p>
+
+<pre><code>request.raw_host_with_port #=&gt; "test.blog.zool.it:3000" 
+</code></pre>
+
+<p><code>port()</code> 取得由<code>raw_host_with_port()</code>获得的端口数值</p>
+
+<pre><code>request.port #=&gt; 3000 
+</code></pre>
+
+<p><code>port_string()</code> 取得<code>raw_host_with_port()</code>获得的端口文本字符串</p>
+
+<pre><code>request.port_string #=&gt; ":3000" 
+</code></pre>
+
+<p><code>protocol()</code> 取得当前使用网络协议</p>
+
+<pre><code>request.protocol #=&gt; "http://" 
+</code></pre>
+
+<p><code>scheme()</code> 取得网络协议</p>
+
+<pre><code>request.scheme #=&gt; "http" 
+</code></pre>
+
+<p><code>request_uri()</code> request请求的uri地址</p>
+
+<pre><code>request.request_uri #=&gt; "/posts/Hello-World" 
+</code></pre>
+
+<p><code>server_port()</code> 取得由<code>env['SERVER_PORT']</code>返回的端口值</p>
+
+<pre><code>request.server_port #=&gt; "3000" 
+</code></pre>
+
+<p><code>ssl?()</code> 当前是否在是用https加密协议</p>
+
+<pre><code>request.ssl?() #=&gt; false 
+</code></pre>
+
+<p><code>standard_port()</code> 返回网络协议标准端口(http为80, https为443)</p>
+
+<pre><code>request.standard_port #=&gt; 80 
+</code></pre>
+
+<p><code>standard_port?()</code> 判断当前协议是否是标准端口</p>
+
+<pre><code>request.standard_port? #=&gt; false 
+</code></pre>
+
+<p><code>url()</code> 取得当前requset完整url</p>
+
+<pre><code>request.url #=&gt; "http://test.blog.zool.it:3000/posts/Hello-World"
+</code></pre>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[在Rails中使用Redis]]></title>
+    <link href="http://randeeshen.github.com/blog/2012/08/24/rails-redis/"/>
+    <updated>2012-08-24T13:50:00+08:00</updated>
+    <id>http://randeeshen.github.com/blog/2012/08/24/rails-redis</id>
+    <content type="html"><![CDATA[<p><a href="http://redis.io/">Redis</a> 是一个高性能的key-value数据库，支持strings, sets, sorted sets, lists and hashes 中数据类型。它和Memcache一样，Redis所有的数据运行在内存中。但不同的是，Redis可以将数据持久化到磁盘中。</p>
+
+<h2>Redis 数据类型</h2>
+
+<p>以下是对Redis支持的数据类型的概括：</p>
+
+<p><code>String</code> 字符串是最基本的类型，可以用作计数器（通过incr, incrby, decr, decrby命令）</p>
+
+<p><code>Set</code> 无序无重复的集合</p>
+
+<p><code>Sorted Set</code> 有序无重复的集合</p>
+
+<p><code>List</code> 有序集合的数组，和Ruby中的Array一样。可以通过pop, push实现队列操作</p>
+
+<p><code>Hash</code> 键值对的哈希类型</p>
+
+<p>Redis的命令可以参考《<a href="http://redis.io/commands">Redis commands</a>》，使用场景可以参考《<a href="http://blog.nosqlfan.com/html/2925.html">redis 适用场景与实现</a>》。</p>
+
+<!--more-->
+
+
+<h2>安装Redis</h2>
+
+<p>安装非常简单，</p>
+
+<pre><code>curl -O http://redis.googlecode.com/files/redis-2.2.2.tar.gz
+tar xzf redis-2.2.2.tar.gz
+cd redis-2.2.2
+make
+cp src/redis-server src/redis-cli /usr/bin
+</code></pre>
+
+<h2>启动Redis服务</h2>
+
+<p>如果在本地环境使用redis-server，可以通过以下命令来启动，该命令使用默认的配置。</p>
+
+<pre><code>redis-server
+</code></pre>
+
+<p>如果希望使用自己的配置文件，可以加入path</p>
+
+<pre><code>redis-server /path/to/redis.conf
+</code></pre>
+
+<h2>Redis 和 Rails</h2>
+
+<p>使用Ezra Zygmuntowicz开发的gem——redis-rb。</p>
+
+<p>第一步，在<code>Gemfile</code>中加入redis-rb</p>
+
+<pre><code>gem 'redis', '2.1.1'
+</code></pre>
+
+<p>通过<code>Bundler</code>安装</p>
+
+<pre><code>bundle install
+</code></pre>
+
+<p>最后，创建<code>config/initializers/redis.rb</code>进行以下配置</p>
+
+<pre><code>$redis = Redis.new(:host =&gt; 'localhost', :port =&gt; 6379)
+</code></pre>
+
+<p>该命令将使用默认的端口6379实例化redis，并设定全局变量 <code>$redis</code>。</p>
+
+<p>让我们检查一下是否一切顺利，启动<code>rails console</code></p>
+
+<pre><code>&gt; $redis
+=&gt; #&lt;Redis client v2.1.1 connected to redis://localhost:6379/0 (Redis
+v2.2.2)&gt; 
+&gt; $redis.set('chunky', 'bacon')
+=&gt; "OK" 
+&gt; $redis.get('chunky')
+=&gt; "bacon"
+</code></pre>
+
+<h2>和Rails结合的例子</h2>
+
+<p>用户关系（User Friendships）</p>
+
+<p>下面介绍使用<code>ActiveRecord</code>和<code>Redis</code>结合管理用户关系。采用<code>sets</code>来存储关系数据。</p>
+
+<pre><code># User Model
+class User &lt; ActiveRecord::Base
+  # follow a user 关注某个用户
+  def follow!(user)
+    $redis.multi do
+      $redis.sadd(self.redis_key(:following), user.id)
+      $redis.sadd(user.redis_key(:followers), self.id)
+    end
+  end
+
+  # unfollow a user 取消关注某个用户
+  def unfollow!(user)
+    $redis.multi do
+      $redis.srem(self.redis_key(:following), user.id)
+      $redis.srem(user.redis_key(:followers), self.id)
+    end
+  end
+
+  # users that self follows 我的粉丝
+  def followers
+    user_ids = $redis.smembers(self.redis_key(:followers))
+    User.where(:id =&gt; user_ids)
+  end
+
+  # users that follow self 我的关注
+  def following
+    user_ids = $redis.smembers(self.redis_key(:following))
+    User.where(:id =&gt; user_ids)
+  end
+
+  # users who follow and are being followed by self 互相关注
+  def friends
+    user_ids = $redis.sinter(self.redis_key(:following), self.redis_key(:followers))
+    User.where(:id =&gt; user_ids)
+  end
+
+  # does the user follow self 是否是我的粉丝
+  def followed_by?(user)
+    $redis.sismember(self.redis_key(:followers), user.id)
+  end
+
+  # does self follow user 是否关注某个用户
+  def following?(user)
+    $redis.sismember(self.redis_key(:following), user.id)
+  end
+
+  # number of followers 关注总数
+  def followers_count
+    $redis.scard(self.redis_key(:followers))
+  end
+
+  # number of users being followed 粉丝总数
+  def following_count
+    $redis.scard(self.redis_key(:following))
+  end
+
+  # helper method to generate redis keys
+  def redis_key(str)
+    "user:#{self.id}:#{str}"
+  end
+end
+</code></pre>
+
+<p>使用例子：</p>
+
+<pre><code>&gt; %w[Alfred Bob].each{|name| User.create(:name =&gt; name)}
+=&gt; ['Alfred', 'Bob']
+&gt; a, b = User.all
+=&gt; [#&lt;User id: 1, name: "Alfred"&gt;, #&lt;User id: 2, name: "Bob"&gt;] 
+&gt; a.follow!(b)
+=&gt; [1, 1] 
+&gt; a.following?(b)
+=&gt; true 
+&gt; b.followed_by?(a)
+=&gt; true 
+&gt; a.following
+=&gt; [#&lt;User id: 2, name: "Bob"&gt;] 
+&gt; b.followers
+=&gt; [#&lt;User id: 1, name: "Alfred"&gt;]
+&gt; a.friends
+=&gt; [] 
+&gt; b.follow!(a)
+=&gt; [1, 1] 
+&gt; a.friends
+=&gt; [#&lt;User id: 2, name: "Bob"&gt;] 
+&gt; b.friends
+=&gt; [#&lt;User id: 1, name: "Alfred"&gt;]
+</code></pre>
+
+<p>Redis使用起来非常简单。在管理用户关系的中，共使用了<code>sadd</code>, <code>scem</code>, <code>smembers</code>, <code>sinter</code>, <code>scard</code>, <code>sismember</code>, <code>mutil</code>，简单说明如下：</p>
+
+<p><code>sadd</code> 将一个或多个member元素加入到集合key当中，已经存在于集合的member元素将被忽略。</p>
+
+<p><code>srem</code> 移除集合key中的一个或多个member元素，不存在的member元素会被忽略。</p>
+
+<p><code>smembers</code> 返回集合key中的所有成员。</p>
+
+<p><code>sinter</code> 返回一个集合的全部成员，该集合是所有给定集合的交集。</p>
+
+<p><code>scard</code> 返回集合key的基数(集合中元素的数量)。</p>
+
+<p><code>sismember</code> 判断member元素是否是集合key的成员。</p>
+
+<p><code>mutil</code> 事务管理，使多条指令成为原子操作</p>
+
+<h2>排行榜（hign score table）</h2>
+
+<p>我们可以通过Redis的<a href="http://redis.io/commands#sorted_set">sorted sets</a>构建一个排行榜。</p>
+
+<pre><code>class User &lt; ActiveRecord::Base
+  # log high score
+  def scored(score)
+    if score &gt; self.high_score
+      $redis.zadd("highscores", score, self.id)
+    end
+  end
+
+  # table rank
+  def rank
+    $redis.zrevrank("highscores", self.id) + 1
+  end
+
+  # high score
+  def high_score
+    $redis.zscore("highscores", self.id).to_i
+  end
+
+  # load top 3 users
+  def self.top_3
+    $redis.zrevrange("highscores", 0, 2).map{|id| User.find(id)}
+  end
+end
+</code></pre>
+
+<p>使用例子如下：</p>
+
+<pre><code>&gt; a, b, c, d = User.limit(4)
+=&gt; [#&lt;User id: 1, name: "Alfred"&gt;, #&lt;User id: 2, name: "Bob"&gt;, #&lt;User id: 3, name: "Charlie"&gt;, #&lt;User id: 4, name: "Derek""&gt;] 
+&gt; a.scored 100
+=&gt; true 
+&gt; b.scored 500
+=&gt; true 
+&gt; c.scored 25
+=&gt; true 
+&gt; d.scored 10000
+ =&gt; true 
+&gt; d.high_score
+ =&gt; 10000 
+&gt; d.rank
+=&gt; 1 
+&gt; c.rank
+=&gt; 4 
+&gt; c.scored 5000000
+=&gt; false 
+&gt; c.high_score
+=&gt; 5000000 
+&gt; c.rank
+=&gt; 1 
+&gt; User.top_3
+=&gt; [#&lt;User id: 3, name: "Charlie"&gt;, #&lt;User id: 4, name: "Derek"&gt;, #&lt;User id: 2, name: "Bob"&gt;] 
+</code></pre>
+
+<p>我们通过<code>zadd</code>, <code>zrevrank</code>, <code>zrevrange</code>, <code>zscore</code>构建了排行榜，简单说明如下：</p>
+
+<p><code>zadd</code> 将一个或多个member元素及其score值加入到有序集key当中。</p>
+
+<p><code>zrevrank</code> 返回有序集key中成员member的排名。其中有序集成员按score值递减(从大到小)排序。</p>
+
+<p><code>zrevrange</code> 返回有序集key中，指定区间内的成员。</p>
+
+<p><code>zscore</code> 返回有序集key中，成员member的score值。</p>
+
+<h2>更多的例子</h2>
+
+<ul>
+<li><a href="http://www.paperplanes.de/2010/2/16/a_collection_of_redis_use_cases.html">A Collection Of Redis Use Cases</a></li>
+<li><a href="http://nosql.mypopescu.com/post/836086276/presentation-redis-persistence-power-or-redis-use">Presentation: Redis - Persistence Power or Redis Use Cases</a></li>
+</ul>
+
+
+<h2>将Redis作为Rails的缓存存储</h2>
+
+<p>通过Luca Guidi的<a href=":;javascripts">Redis Store</a>，可方便的将Redis作为缓存储存。Redis store为Rails框架提供了<code>Rack::Session</code>, <code>Rack::Cache</code>, <code>I18n</code>和<code>Redis缓存</code>。它可以用来缓存存储、Session存储，且与Rack::Cache集成的很好。</p>
+
+<pre><code>https://github.com/jodosha/redis-store
+</code></pre>
+
+<p>在<code>Gemfile</code>中加入<code>redis-store</code></p>
+
+<pre><code>gem 'redis-store', '1.0.0.beta4'
+</code></pre>
+
+<p>然后，通过<code>Bundler</code>安装</p>
+
+<pre><code>bundle install
+</code></pre>
+
+<p>接着在<code>config/environments/production.rb</code>更新配置：</p>
+
+<pre><code>config.cache_store = :redis_store
+</code></pre>
+
+<p>就这样，Rails应用将使用Redis作为缓存存储</p>
+
+<h2>监控Redis</h2>
+
+<p>如果在自己的服务器上使用Redis，且在redis.conf中设置了daemonize为yes，且需要对其进行监控。下方是使用Monit和God的例子：</p>
+
+<h3>Monit</h3>
+
+<pre><code>check process redis
+  start program = "/usr/bin/redis-server /etc/redis/redis.conf"
+  stop program = "/usr/bin/redis-cli -p 6379 shutdown"
+  with pidfile /var/run/redis.pid
+  group redis
+</code></pre>
+
+<h3>God</h3>
+
+<pre><code>%w{6379}.each do |port|
+  God.watch do |w| 
+    w.name = "redis" 
+    w.interval = 30.seconds 
+
+    w.start = "/usr/bin/redis-server /etc/redis/redis.conf" 
+    w.stop = "/usr/bin/redis-cli -p 6379 shutdown" 
+    w.restart = "#{w.stop} &amp;&amp; #{w.start}" 
+
+    w.start_grace = 10.seconds 
+    w.restart_grace = 10.seconds 
+
+    w.start_if do |start| 
+      start.condition(:process_running) do |c| 
+        c.interval = 5.seconds 
+        c.running = false 
+      end 
+    end 
+  end
+end
+</code></pre>
+
+<h2>Redis和Unix Sockets</h2>
+
+<p>Redis 2.2起引入和unix sockets通信的机制。要使用该功能，就要在<code>redis.conf</code>里将下面的配置取消注释：</p>
+
+<pre><code>unixsocket /tmp/redis.sock
+</code></pre>
+
+<p>修改<code>config/initializers/redis.rb</code>以链接到应用中的Redis：</p>
+
+<pre><code>$redis = Redis.new(:path =&gt; "/tmp/redis.sock")
+</code></pre>
+
+<h2>Redis相关Gems</h2>
+
+<p><a href="https://github.com/nateware/redis-objects">Redis objects</a>可以将redis数据类型映射为Ruby object，是ORMs非常的替代品。</p>
+
+<p><a href="https://github.com/defunkt/resque">Resque</a>是基于Redis的管理后台任务，它可以建立多个队列并设置优先级。 在Github使用并开源，可以通过<a href="https://github.com/blog/542-introducing-resque">这篇介绍</a>了解Resque。</p>
+
+<p><a href="https://github.com/assaf/vanity">Vanity</a>是试验驱动的开发框架，它为Rails程序提供了A/B测试的功能，并通过Grab与Google Analytics集成。</p>
+
+<p><a href="https://github.com/soveran/ohm">Ohm</a>将Redis作为数据存储，它提供验证扩展，并有很好的性能。</p>
+
+<p><a href="https://github.com/jamesgolick/rollout">Rollout</a>基于Redis，用户产品小流量测试或灰度发布。</p>
+
+<p><a href="https://github.com/seatgeek/soulmate">Soulmate</a>提供了自动完成（Autocomplete）的通用解决方案。它基于Redis的sorted set，可根据输入的部分单词索引出最相符的选项。</p>
+
+<p>中文原文：<a href="http://jokry.com/blog/2012/05/09/using-redis-with-ruby-on-rails/">http://jokry.com/blog/2012/05/09/using-redis-with-ruby-on-rails/</a>
+英文原文：<a href="http://jimneath.org/2011/03/24/using-redis-with-ruby-on-rails.html">http://jimneath.org/2011/03/24/using-redis-with-ruby-on-rails.html</a></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[友人以上.恋人未满]]></title>
@@ -820,22 +1273,22 @@ config.action_mailer.smtp_settings = {
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[用 resque 實作背景作業]]></title>
+    <title type="html"><![CDATA[用 resque 做后台任务]]></title>
     <link href="http://randeeshen.github.com/blog/2012/07/11/resque/"/>
     <updated>2012-07-11T08:20:00+08:00</updated>
     <id>http://randeeshen.github.com/blog/2012/07/11/resque</id>
-    <content type="html"><![CDATA[<h2>用 resque 實作背景作業 (前置設定篇)</h2>
+    <content type="html"><![CDATA[<h2>用 resque 做后台任务 (前置设定篇)</h2>
 
-<p>resque 是一套可以用來實作 background job 的 gem，舉凡長時間的執行如 email，點數計算等等非即時性的工作，都可以採用非同步執行， 以加速前端服務的反應速度。  <br/>
-resque 是以 redis 做為 message queue server 的方式來進行…</p>
+<p>resque 是一套可以用來做 background job 的 gem，凡是执行时间长的如 email 等等非即时性的工作，都可以采用非同步执行， 以加速前端服务的反应速度。  <br/>
+resque 是以 redis 做为 message queue server 的方式來进行…</p>
 
-<p>參考連結</p>
+<p>參考链接</p>
 
 <p>RailsCast - 影片: <a href="http://railscasts.com/episodes/271-resque">Resque</a><br/>
 RailsCast - 文字: <a href="http://railscasts.com/episodes/271-resque?view=asciicast">Resque</a>  <br/>
 官方文件: <a href="https://github.com/defunkt/resque">Github</a></p>
 
-<p>安裝 Gem</p>
+<p>安装 Gem</p>
 
 <pre><code># Gemfile
 gem "resque"
@@ -855,19 +1308,19 @@ sudo apt-get install redis-server
 <!--more-->
 
 
-<h4>啟動/停止 redis server</h4>
+<h4>启动/停止 redis server</h4>
 
 <ul>
 <li><p>MacOS</p>
 
-<pre><code># 啟動
+<pre><code># 启动
 /usr/local/bin/redis-server /usr/local/etc/redis.conf
 # 停止 ps + kill :p
 sudo kill -SIGHUP $(ps aux|grep 'redis-server'|grep -v 'grep'|awk '{print $2}')
 </code></pre></li>
 <li><p>Debian / Ubuntu</p>
 
-<pre><code># 啟動
+<pre><code># 启动
 sudo service redis-server start
 # 停止
 sudo service redis-server stop
@@ -875,12 +1328,12 @@ sudo service redis-server stop
 </ul>
 
 
-<h4>Resque 中的 redis 設定</h4>
+<h4>Resque 中的 redis 设定</h4>
 
-<p>由於 resque 必須將 job 丟上 redis (mq server) 因此必須設定連線的位址</p>
+<p>由于 resque 必須将 job 丟上 redis (mq server) 因此必须设定连接的位址</p>
 
-<p>手動建立兩個檔案<br/>
-<code>config/redis.yml</code> => redis 的連線設定檔<br/>
+<p>手动建立兩个文件<br/>
+<code>config/redis.yml</code> => redis 的连接配置文件<br/>
 <code>config/initializers/resque.rb</code> => 初始化 resque</p>
 
 <p><code>config/redis.yml</code></p>
@@ -897,7 +1350,7 @@ Resque.redis = config[:redis]
 
 <h4>RedisToGo</h4>
 
-<p>若是使用雲端的Redis服務-RedisToGo 可以直接在 yml 中貼上 instance 的 uri, 如</p>
+<p>若是使用云端的Redis服务-RedisToGo 可以直接在 yml 中贴上 instance 的 uri, 如</p>
 
 <p><code>config/redis.yml</code></p>
 
@@ -907,7 +1360,7 @@ Resque.redis = config[:redis]
 
 <h4>redis-rb</h4>
 
-<p>若 redis 有同時兼作 cache 或 db 用, 而且是透過 gem “redis” 進行連線的話則可以直接將變數指定</p>
+<p>若 redis 有同时兼作 cache 或 db 用, 而且是透过 gem “redis” 進行连接的話则可以直接將变量指定</p>
 
 <p><code>config/redis.yml</code></p>
 
@@ -923,15 +1376,15 @@ Resque.redis = config[:redis]
 Resque.redis = Redis.new( :host =&gt; config[:host], :port =&gt; config[:port], :db =&gt; config[:db] )
 </code></pre>
 
-<p>一般小弟比較偏好最後一個方法, 因為 redis 太方便了, 只做 background job 有點可惜 XD</p>
+<p>一般小弟比较偏好最后一个方法, 因为 redis 太方便了, 只做 background job 有點可惜 XD</p>
 
 <h4>Resque server</h4>
 
-<p>想要有直觀的介面可以看目前 message queue (redis) 上的 job 執行狀況 resque 也有提供</p>
+<p>想要有直观的介面可以看目前 message queue (redis) 上的 job 执行狀況 resque 也有提供</p>
 
 <p><code>config/initializers/resque.rb</code></p>
 
-<pre><code># 在任何 initial 的檔案中加都可
+<pre><code># 在任何 initial 的文件中加都可
 require "resque/server"
 </code></pre>
 
@@ -940,39 +1393,39 @@ require "resque/server"
 <pre><code>mount Resque::Server.new, :at =&gt; "/admin/resque"
 </code></pre>
 
-<p>啟動 rails server, 連線 http://localhost:3000/admin/resque 就可以看到啦</p>
+<p>启动 rails server, 连接 http://localhost:3000/admin/resque 就可以看到啦</p>
 
-<h4>啟動 worker</h4>
+<h4>启动 worker</h4>
 
-<p>丟上 message queue 的工作, 必須透過 worker 逐個要下來執行</p>
+<p>丟上 message queue 的工作, 必須透过 worker 逐个要下來执行</p>
 
-<pre><code># 啟動worker…
+<pre><code># 启动worker…
 QUEUE=* bundle exec rake resque:work
 </code></pre>
 
-<p>上述指令啟動後就會掛著, 而 server 上的啟動可以透過 BACKGROUND=yes 讓 worker 變成背景執行, 之後會再介紹完整參數說明</p>
+<p>上述指令启动后就会挂著, 而 server 上的启动可以透过 BACKGROUND=yes 让 worker 变成后台执行, 之后会再介紹完整參数说明</p>
 
-<p>worker 在 message queue 中有許多 issue, 例如:<br/>
-1. 佈署時如何自動的重啟<br/>
-2. server 上的 worker 掛了要怎麼自動重啟<br/>
-3. worker 能否 multi-thread 執行或針對特定 queue 等等</p>
+<p>worker 在 message queue 中有许多 issue, 例如:<br/>
+1. 部署时如何自动的重启<br/>
+2. server 上的 worker 挂了要怎麼自动重启<br/>
+3. worker 能否 multi-thread 执行或针对特定 queue 等等</p>
 
-<p>以上是有關 resque 的環境設定<br/>
+<p>以上是有关 resque 的環境设定<br/>
 redis => resuqe config => worker</p>
 
-<h2>用 resque 實作背景作業 (基本使用篇)</h2>
+<h2>用 resque 做后台任务 (基本使用篇)</h2>
 
-<p>上篇提到如何進行 redis, resque, worker 的設定安裝 本篇將介紹基本使用方式</p>
+<p>上篇提到如何進行 redis, resque, worker 的设定安裝 本篇將介紹基本使用方式</p>
 
-<p>參考連結<br/>
+<p>參考連结<br/>
 RailsCast - 影片: Resque RailsCast - 文字: <br/>
 Resque 官方文件: Github</p>
 
 <h4>基本使用</h4>
 
-<p>情境: 文章內容更新後, 要重新計算其價值(p幣~XD)</p>
+<p>情境: 文章內容更新后, 要重新计算其價值(p幣~XD)</p>
 
-<p>先寫好 worker 要做的事情, worker 可以是任何 class</p>
+<p>先写好 worker 要做的事情, worker 可以是任何 class</p>
 
 <p><code>app/workers/post_evaluate.rb</code></p>
 
@@ -987,7 +1440,7 @@ Resque 官方文件: Github</p>
 end
 </code></pre>
 
-<p>worker 必備兩個部分: 1. <code>@queue</code> 指定 <code>queue</code> 的名稱 2. <code>class method:perform</code> 執行 job 內容, 參數可自定。接下來是如何把 job 丟上 <code>queue</code></p>
+<p>worker 必備兩个部分: 1. <code>@queue</code> 指定 <code>queue</code> 的名称 2. <code>class method:perform</code> 执行 job 內容, 參数可自定。接下來是如何把 job 丟上 <code>queue</code></p>
 
 <p><code>app/models/post.rb</code></p>
 
@@ -999,21 +1452,21 @@ end
 Resque.enqueue [worker class], [argument 1], [argument 2], …..
 </code></pre>
 
-<p>相當於 worker 執行了 PostEvaluate.perform(self.id, total_secs)</p>
+<p>相当于 worker 执行了 PostEvaluate.perform(self.id, total_secs)</p>
 
 <h4>注意事項</h4>
 
-<p>enqueue 的參數類型儘可能簡單: <code>Fixnum</code>, <code>String</code>, <code>Array</code>, <code>Hash</code> <br/>
-不要將整個 model 或 <code>class instance</code> 丟到 mq 上
-redis 無法儲存像 model 這樣複雜的變數類型</p>
+<p>enqueue 的參数类型儘可能简单: <code>Fixnum</code>, <code>String</code>, <code>Array</code>, <code>Hash</code> <br/>
+不要將整个 model 或 <code>class instance</code> 丟到 mq 上
+redis 无法儲存像 model 这样複雜的变量类型</p>
 
-<h2>用 resque 實作背景作業 ( mailer 篇)</h2>
+<h2>用 resque 做后台任务 ( mailer 篇)</h2>
 
-<p>寄信的工作是最必要丟背景的。在 web 前端使用的過程中，若要等待 server 產生 email 內容、和 smtp 連線、然後再把信送出去，這樣的過程肯定讓使用品質大大扣分…<br/>
+<p>寄信的工作是最必要丟后台的。在 web 前端使用的过程中，若要等待 server 产生 email 內容、和 smtp 连接、然后再把信送出去，这样的过程肯定让使用品質大大扣分…<br/>
 因此 gem “resque_mailer” 將 resque 的 enqueue 和 perform 實作到 ActionMailer::Base 中</p>
 
-<p>即原本的 deliver 應該是要根據 app 的 mailer 設定 (smtp或sendmail等) 把信送出
-<code>bundle resqie_mailer</code> 後, deliver 的結果則變成送到 mq 上 (透過Resque.enqueue)</p>
+<p>即原本的 deliver 应该是要根据 app 的 mailer 设定 (smtp或sendmail等) 把信送出
+<code>bundle resqie_mailer</code> 后, deliver 的结果则变成送到 mq 上 (透过Resque.enqueue)</p>
 
 <h4>安裝</h4>
 
@@ -1022,16 +1475,16 @@ gem 'resque'
 gem 'resque_mailer'
 </code></pre>
 
-<h4>設定</h4>
+<h4>设定</h4>
 
 <p><code>config/initializers/resque_mailer.rb</code></p>
 
-<pre><code># queue 的名稱
+<pre><code># queue 的名称
 Resque::Mailer.default_queue_name = "foo_mailer"
 
 # 有 resque_spec
 Resque::Mailer.excluded_environments = []
-# 無 resque_spec
+# 无 resque_spec
 Resque::Mailer.excluded_environments = [:test, :cucumber]
 </code></pre>
 
@@ -1056,34 +1509,34 @@ end
 <pre><code>MyMailer.foo(user_id).deliver!
 </code></pre>
 
-<p>這裡要注意!!!!! 因為 resque 會將參數內容送到 mq 上, 而 redis 無法處理 number, string, array, hash 以外的變數, 所以在定義 mailer action 時,
-參數務必限制在上述這些變數類型的範圍內</p>
+<p>这里要注意!!!!! 因为 resque 会將參数內容送到 mq 上, 而 redis 无法处理 number, string, array, hash 以外的变量, 所以在定義 mailer action 时,
+參数务必限制在上述这些变量类型的范围內</p>
 
-<h4>worker 的執行</h4>
+<h4>worker 的执行</h4>
 
-<p>一般 mailer 的 worker 建議獨立一條 queue 執行, 效率會比較好 :p</p>
+<p>一般 mailer 的 worker 建议独立一条 queue 执行, 效率会比较好 :p</p>
 
 <pre><code>QUEUE=foo_mailer bundle exec rake resque:work
 </code></pre>
 
-<p><code>resque_mailer</code> 簡單, 但仍是 background job
-因此測試還是要多多寫 XD</p>
+<p><code>resque_mailer</code> 简单, 但仍是 background job
+因此測试還是要多多写 XD</p>
 
-<h2>用 resque 實作背景作業 ( 佈署篇)</h2>
+<h2>用 resque 做后台任务 ( 部署篇)</h2>
 
 <hr />
 
-<p>透過 capistrano 佈署到 server 時，除了需要啟動 worker 之外，也會希望在每次佈署後，也重新啟動 worker
-因為 worker 是透過 rake 啟動的，所以當 perform 相關的程式有修改時，worker 也必須重新啟動以下將介紹如何將重啟 worker 整合到 capistrano 中</p>
+<p>透过 capistrano 部署到 server 时，除了需要启动 worker 之外，也会希望在每次部署后，也重新启动 worker
+因为 worker 是透过 rake 启动的，所以当 perform 相关的程式有修改时，worker 也必須重新启动以下將介紹如何將重启 worker 整合到 capistrano 中</p>
 
-<h4>將 worker 丟背景執行的方法</h4>
+<h4>將 worker 丟后台执行的方法</h4>
 
-<p>resque 1.9 以上有提供參數</p>
+<p>resque 1.9 以上有提供參数</p>
 
 <pre><code>BACKGROUND=yes QUEUE=foo_queue bundle exec rake environment resque:work
 </code></pre>
 
-<p>背景的 worker 要留一下 pid file, 以方便 kill</p>
+<p>后台的 worker 要留一下 pid file, 以方便 kill</p>
 
 <pre><code>PIDFILE=./resque.pid BACKGROUND=yes QUEUE=foo_queue bundle exec rake environment resque:work
 </code></pre>
@@ -1101,62 +1554,62 @@ end
     queues.each do |queue|
       pid_file = "#{current_path}/tmp/pids/resque-#{queue}.pid"
       run "test -f #{pid_file} &amp;&amp; cd #{current_path} &amp;&amp; kill -s QUIT `cat #{pid_file}` || rm -f #{pid_file}"
-      run "cd #{current_path} &amp;&amp; PIDFILE=#{pid_file} RAILS_ENV=#{rails_env} BACKGROUND=yes QUEUE=#{queue} bundle exec rake environment resque:work"
+      run "cd #{current_path} &amp;&amp; PIDFILE=#{pid_file} RAILS_ENV=#{rails_env} BACKGROUND=yes QUEUE=#{queue} bundle execerake environment resque:work"
     end
   end
   #...
 end
 </code></pre>
 
-<p>上面的例子是以一條 queue 配一個 worker 的方式執行，若要通通塞一個 worker 就 <code>QUEUE=*</code> 吧 XD</p>
+<p>上面的例子是以一条 queue 配一个 worker 的方式执行，若要通通塞一个 worker 就 <code>QUEUE=*</code> 吧 XD</p>
 
-<p>restart app 後就 restart resque worker 吧!!</p>
+<p>restart app 后就 restart resque worker 吧!!</p>
 
 <p><code>config/deploy.rb</code></p>
 
 <pre><code>after 'deploy:restart', 'deploy:restart_resque'
 </code></pre>
 
-<h4>有關啟動 worker 的參數</h4>
+<h4>有关启动 worker 的參数</h4>
 
-<p>resque 提供了許多參數，讓你可以依照不同的需求執行worker，底下將介紹</p>
+<p>resque 提供了许多參数，让你可以依照不同的需求执行worker，底下將介紹</p>
 
 <ul>
-<li><p>將 worker 執行的結果輸出</p>
+<li><p>將 worker 执行的结果輸出</p>
 
-<p>debug 很好用，但個人還是推薦用 rspec 去 debug 吧 XD</p>
+<p>debug 很好用，但个人還是推荐用 rspec 去 debug 吧 XD</p>
 
 <pre><code>VVERBOSE=1 QUEUE=* bundle exec rake environment resque:work
 </code></pre>
 
-<p>指定 queue (一條或多條)</p>
+<p>指定 queue (一条或多条)</p>
 
-<p>多條可以逗號隔開</p>
+<p>多条可以逗号隔开</p>
 
 <pre><code>QUEUES=file_serve, warm_cache bundle exec rake environment resque:work
 </code></pre></li>
-<li><p>則是所有的 queue</p>
+<li><p>则是所有的 queue</p>
 
 <pre><code>QUEUES=* bundle exec rake environment resque:work
 </code></pre></li>
 </ul>
 
 
-<p>polling 的頻率</p>
+<p>polling 的频率</p>
 
-<p>針對即時性高的需求,以秒計,預設為 5 秒</p>
+<p>针对即时性高的需求,以秒计,预设为 5 秒</p>
 
 <pre><code>INTERVAL=0.1 QUEUE=foo bundle exec rake environment resque:work
 </code></pre>
 
-<p>多個 worker 同步執行</p>
+<p>多个 worker 同步执行</p>
 
 <pre><code>COUNT=5 QUEUE=* bundle exec rake environment resque:workers
 </code></pre>
 
-<p>但官方推薦用 gem “god” 來執行多個 worker
-相關可參考<a href="https://github.com/defunkt/resque/blob/master/examples/god/resque.god">官方範例</a><br/>
-god 也可以用來解決 worker 掛掉的問題，有關 god 的整合, 有空再分享</p>
+<p>但官方推荐用 gem “god” 來执行多个 worker
+相关可參考<a href="https://github.com/defunkt/resque/blob/master/examples/god/resque.god">官方范例</a><br/>
+god 也可以用來解決 worker 挂掉的问題，有关 god 的整合, 有空再分享</p>
 ]]></content>
   </entry>
   

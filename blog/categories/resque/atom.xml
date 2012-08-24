@@ -4,7 +4,7 @@
   <title><![CDATA[Category: resque | Randee’s Octopress Blog]]></title>
   <link href="http://randeeshen.github.com/blog/categories/resque/atom.xml" rel="self"/>
   <link href="http://randeeshen.github.com/"/>
-  <updated>2012-08-23T17:05:02+08:00</updated>
+  <updated>2012-08-25T05:42:21+08:00</updated>
   <id>http://randeeshen.github.com/</id>
   <author>
     <name><![CDATA[Randee]]></name>
@@ -14,22 +14,22 @@
 
   
   <entry>
-    <title type="html"><![CDATA[用 resque 實作背景作業]]></title>
+    <title type="html"><![CDATA[用 resque 做后台任务]]></title>
     <link href="http://randeeshen.github.com/blog/2012/07/11/resque/"/>
     <updated>2012-07-11T08:20:00+08:00</updated>
     <id>http://randeeshen.github.com/blog/2012/07/11/resque</id>
-    <content type="html"><![CDATA[<h2>用 resque 實作背景作業 (前置設定篇)</h2>
+    <content type="html"><![CDATA[<h2>用 resque 做后台任务 (前置设定篇)</h2>
 
-<p>resque 是一套可以用來實作 background job 的 gem，舉凡長時間的執行如 email，點數計算等等非即時性的工作，都可以採用非同步執行， 以加速前端服務的反應速度。  <br/>
-resque 是以 redis 做為 message queue server 的方式來進行…</p>
+<p>resque 是一套可以用來做 background job 的 gem，凡是执行时间长的如 email 等等非即时性的工作，都可以采用非同步执行， 以加速前端服务的反应速度。  <br/>
+resque 是以 redis 做为 message queue server 的方式來进行…</p>
 
-<p>參考連結</p>
+<p>參考链接</p>
 
 <p>RailsCast - 影片: <a href="http://railscasts.com/episodes/271-resque">Resque</a><br/>
 RailsCast - 文字: <a href="http://railscasts.com/episodes/271-resque?view=asciicast">Resque</a>  <br/>
 官方文件: <a href="https://github.com/defunkt/resque">Github</a></p>
 
-<p>安裝 Gem</p>
+<p>安装 Gem</p>
 
 <pre><code># Gemfile
 gem "resque"
@@ -49,19 +49,19 @@ sudo apt-get install redis-server
 <!--more-->
 
 
-<h4>啟動/停止 redis server</h4>
+<h4>启动/停止 redis server</h4>
 
 <ul>
 <li><p>MacOS</p>
 
-<pre><code># 啟動
+<pre><code># 启动
 /usr/local/bin/redis-server /usr/local/etc/redis.conf
 # 停止 ps + kill :p
 sudo kill -SIGHUP $(ps aux|grep 'redis-server'|grep -v 'grep'|awk '{print $2}')
 </code></pre></li>
 <li><p>Debian / Ubuntu</p>
 
-<pre><code># 啟動
+<pre><code># 启动
 sudo service redis-server start
 # 停止
 sudo service redis-server stop
@@ -69,12 +69,12 @@ sudo service redis-server stop
 </ul>
 
 
-<h4>Resque 中的 redis 設定</h4>
+<h4>Resque 中的 redis 设定</h4>
 
-<p>由於 resque 必須將 job 丟上 redis (mq server) 因此必須設定連線的位址</p>
+<p>由于 resque 必須将 job 丟上 redis (mq server) 因此必须设定连接的位址</p>
 
-<p>手動建立兩個檔案<br/>
-<code>config/redis.yml</code> => redis 的連線設定檔<br/>
+<p>手动建立兩个文件<br/>
+<code>config/redis.yml</code> => redis 的连接配置文件<br/>
 <code>config/initializers/resque.rb</code> => 初始化 resque</p>
 
 <p><code>config/redis.yml</code></p>
@@ -91,7 +91,7 @@ Resque.redis = config[:redis]
 
 <h4>RedisToGo</h4>
 
-<p>若是使用雲端的Redis服務-RedisToGo 可以直接在 yml 中貼上 instance 的 uri, 如</p>
+<p>若是使用云端的Redis服务-RedisToGo 可以直接在 yml 中贴上 instance 的 uri, 如</p>
 
 <p><code>config/redis.yml</code></p>
 
@@ -101,7 +101,7 @@ Resque.redis = config[:redis]
 
 <h4>redis-rb</h4>
 
-<p>若 redis 有同時兼作 cache 或 db 用, 而且是透過 gem “redis” 進行連線的話則可以直接將變數指定</p>
+<p>若 redis 有同时兼作 cache 或 db 用, 而且是透过 gem “redis” 進行连接的話则可以直接將变量指定</p>
 
 <p><code>config/redis.yml</code></p>
 
@@ -117,15 +117,15 @@ Resque.redis = config[:redis]
 Resque.redis = Redis.new( :host =&gt; config[:host], :port =&gt; config[:port], :db =&gt; config[:db] )
 </code></pre>
 
-<p>一般小弟比較偏好最後一個方法, 因為 redis 太方便了, 只做 background job 有點可惜 XD</p>
+<p>一般小弟比较偏好最后一个方法, 因为 redis 太方便了, 只做 background job 有點可惜 XD</p>
 
 <h4>Resque server</h4>
 
-<p>想要有直觀的介面可以看目前 message queue (redis) 上的 job 執行狀況 resque 也有提供</p>
+<p>想要有直观的介面可以看目前 message queue (redis) 上的 job 执行狀況 resque 也有提供</p>
 
 <p><code>config/initializers/resque.rb</code></p>
 
-<pre><code># 在任何 initial 的檔案中加都可
+<pre><code># 在任何 initial 的文件中加都可
 require "resque/server"
 </code></pre>
 
@@ -134,39 +134,39 @@ require "resque/server"
 <pre><code>mount Resque::Server.new, :at =&gt; "/admin/resque"
 </code></pre>
 
-<p>啟動 rails server, 連線 http://localhost:3000/admin/resque 就可以看到啦</p>
+<p>启动 rails server, 连接 http://localhost:3000/admin/resque 就可以看到啦</p>
 
-<h4>啟動 worker</h4>
+<h4>启动 worker</h4>
 
-<p>丟上 message queue 的工作, 必須透過 worker 逐個要下來執行</p>
+<p>丟上 message queue 的工作, 必須透过 worker 逐个要下來执行</p>
 
-<pre><code># 啟動worker…
+<pre><code># 启动worker…
 QUEUE=* bundle exec rake resque:work
 </code></pre>
 
-<p>上述指令啟動後就會掛著, 而 server 上的啟動可以透過 BACKGROUND=yes 讓 worker 變成背景執行, 之後會再介紹完整參數說明</p>
+<p>上述指令启动后就会挂著, 而 server 上的启动可以透过 BACKGROUND=yes 让 worker 变成后台执行, 之后会再介紹完整參数说明</p>
 
-<p>worker 在 message queue 中有許多 issue, 例如:<br/>
-1. 佈署時如何自動的重啟<br/>
-2. server 上的 worker 掛了要怎麼自動重啟<br/>
-3. worker 能否 multi-thread 執行或針對特定 queue 等等</p>
+<p>worker 在 message queue 中有许多 issue, 例如:<br/>
+1. 部署时如何自动的重启<br/>
+2. server 上的 worker 挂了要怎麼自动重启<br/>
+3. worker 能否 multi-thread 执行或针对特定 queue 等等</p>
 
-<p>以上是有關 resque 的環境設定<br/>
+<p>以上是有关 resque 的環境设定<br/>
 redis => resuqe config => worker</p>
 
-<h2>用 resque 實作背景作業 (基本使用篇)</h2>
+<h2>用 resque 做后台任务 (基本使用篇)</h2>
 
-<p>上篇提到如何進行 redis, resque, worker 的設定安裝 本篇將介紹基本使用方式</p>
+<p>上篇提到如何進行 redis, resque, worker 的设定安裝 本篇將介紹基本使用方式</p>
 
-<p>參考連結<br/>
+<p>參考連结<br/>
 RailsCast - 影片: Resque RailsCast - 文字: <br/>
 Resque 官方文件: Github</p>
 
 <h4>基本使用</h4>
 
-<p>情境: 文章內容更新後, 要重新計算其價值(p幣~XD)</p>
+<p>情境: 文章內容更新后, 要重新计算其價值(p幣~XD)</p>
 
-<p>先寫好 worker 要做的事情, worker 可以是任何 class</p>
+<p>先写好 worker 要做的事情, worker 可以是任何 class</p>
 
 <p><code>app/workers/post_evaluate.rb</code></p>
 
@@ -181,7 +181,7 @@ Resque 官方文件: Github</p>
 end
 </code></pre>
 
-<p>worker 必備兩個部分: 1. <code>@queue</code> 指定 <code>queue</code> 的名稱 2. <code>class method:perform</code> 執行 job 內容, 參數可自定。接下來是如何把 job 丟上 <code>queue</code></p>
+<p>worker 必備兩个部分: 1. <code>@queue</code> 指定 <code>queue</code> 的名称 2. <code>class method:perform</code> 执行 job 內容, 參数可自定。接下來是如何把 job 丟上 <code>queue</code></p>
 
 <p><code>app/models/post.rb</code></p>
 
@@ -193,21 +193,21 @@ end
 Resque.enqueue [worker class], [argument 1], [argument 2], …..
 </code></pre>
 
-<p>相當於 worker 執行了 PostEvaluate.perform(self.id, total_secs)</p>
+<p>相当于 worker 执行了 PostEvaluate.perform(self.id, total_secs)</p>
 
 <h4>注意事項</h4>
 
-<p>enqueue 的參數類型儘可能簡單: <code>Fixnum</code>, <code>String</code>, <code>Array</code>, <code>Hash</code> <br/>
-不要將整個 model 或 <code>class instance</code> 丟到 mq 上
-redis 無法儲存像 model 這樣複雜的變數類型</p>
+<p>enqueue 的參数类型儘可能简单: <code>Fixnum</code>, <code>String</code>, <code>Array</code>, <code>Hash</code> <br/>
+不要將整个 model 或 <code>class instance</code> 丟到 mq 上
+redis 无法儲存像 model 这样複雜的变量类型</p>
 
-<h2>用 resque 實作背景作業 ( mailer 篇)</h2>
+<h2>用 resque 做后台任务 ( mailer 篇)</h2>
 
-<p>寄信的工作是最必要丟背景的。在 web 前端使用的過程中，若要等待 server 產生 email 內容、和 smtp 連線、然後再把信送出去，這樣的過程肯定讓使用品質大大扣分…<br/>
+<p>寄信的工作是最必要丟后台的。在 web 前端使用的过程中，若要等待 server 产生 email 內容、和 smtp 连接、然后再把信送出去，这样的过程肯定让使用品質大大扣分…<br/>
 因此 gem “resque_mailer” 將 resque 的 enqueue 和 perform 實作到 ActionMailer::Base 中</p>
 
-<p>即原本的 deliver 應該是要根據 app 的 mailer 設定 (smtp或sendmail等) 把信送出
-<code>bundle resqie_mailer</code> 後, deliver 的結果則變成送到 mq 上 (透過Resque.enqueue)</p>
+<p>即原本的 deliver 应该是要根据 app 的 mailer 设定 (smtp或sendmail等) 把信送出
+<code>bundle resqie_mailer</code> 后, deliver 的结果则变成送到 mq 上 (透过Resque.enqueue)</p>
 
 <h4>安裝</h4>
 
@@ -216,16 +216,16 @@ gem 'resque'
 gem 'resque_mailer'
 </code></pre>
 
-<h4>設定</h4>
+<h4>设定</h4>
 
 <p><code>config/initializers/resque_mailer.rb</code></p>
 
-<pre><code># queue 的名稱
+<pre><code># queue 的名称
 Resque::Mailer.default_queue_name = "foo_mailer"
 
 # 有 resque_spec
 Resque::Mailer.excluded_environments = []
-# 無 resque_spec
+# 无 resque_spec
 Resque::Mailer.excluded_environments = [:test, :cucumber]
 </code></pre>
 
@@ -250,34 +250,34 @@ end
 <pre><code>MyMailer.foo(user_id).deliver!
 </code></pre>
 
-<p>這裡要注意!!!!! 因為 resque 會將參數內容送到 mq 上, 而 redis 無法處理 number, string, array, hash 以外的變數, 所以在定義 mailer action 時,
-參數務必限制在上述這些變數類型的範圍內</p>
+<p>这里要注意!!!!! 因为 resque 会將參数內容送到 mq 上, 而 redis 无法处理 number, string, array, hash 以外的变量, 所以在定義 mailer action 时,
+參数务必限制在上述这些变量类型的范围內</p>
 
-<h4>worker 的執行</h4>
+<h4>worker 的执行</h4>
 
-<p>一般 mailer 的 worker 建議獨立一條 queue 執行, 效率會比較好 :p</p>
+<p>一般 mailer 的 worker 建议独立一条 queue 执行, 效率会比较好 :p</p>
 
 <pre><code>QUEUE=foo_mailer bundle exec rake resque:work
 </code></pre>
 
-<p><code>resque_mailer</code> 簡單, 但仍是 background job
-因此測試還是要多多寫 XD</p>
+<p><code>resque_mailer</code> 简单, 但仍是 background job
+因此測试還是要多多写 XD</p>
 
-<h2>用 resque 實作背景作業 ( 佈署篇)</h2>
+<h2>用 resque 做后台任务 ( 部署篇)</h2>
 
 <hr />
 
-<p>透過 capistrano 佈署到 server 時，除了需要啟動 worker 之外，也會希望在每次佈署後，也重新啟動 worker
-因為 worker 是透過 rake 啟動的，所以當 perform 相關的程式有修改時，worker 也必須重新啟動以下將介紹如何將重啟 worker 整合到 capistrano 中</p>
+<p>透过 capistrano 部署到 server 时，除了需要启动 worker 之外，也会希望在每次部署后，也重新启动 worker
+因为 worker 是透过 rake 启动的，所以当 perform 相关的程式有修改时，worker 也必須重新启动以下將介紹如何將重启 worker 整合到 capistrano 中</p>
 
-<h4>將 worker 丟背景執行的方法</h4>
+<h4>將 worker 丟后台执行的方法</h4>
 
-<p>resque 1.9 以上有提供參數</p>
+<p>resque 1.9 以上有提供參数</p>
 
 <pre><code>BACKGROUND=yes QUEUE=foo_queue bundle exec rake environment resque:work
 </code></pre>
 
-<p>背景的 worker 要留一下 pid file, 以方便 kill</p>
+<p>后台的 worker 要留一下 pid file, 以方便 kill</p>
 
 <pre><code>PIDFILE=./resque.pid BACKGROUND=yes QUEUE=foo_queue bundle exec rake environment resque:work
 </code></pre>
@@ -295,62 +295,62 @@ end
     queues.each do |queue|
       pid_file = "#{current_path}/tmp/pids/resque-#{queue}.pid"
       run "test -f #{pid_file} &amp;&amp; cd #{current_path} &amp;&amp; kill -s QUIT `cat #{pid_file}` || rm -f #{pid_file}"
-      run "cd #{current_path} &amp;&amp; PIDFILE=#{pid_file} RAILS_ENV=#{rails_env} BACKGROUND=yes QUEUE=#{queue} bundle exec rake environment resque:work"
+      run "cd #{current_path} &amp;&amp; PIDFILE=#{pid_file} RAILS_ENV=#{rails_env} BACKGROUND=yes QUEUE=#{queue} bundle execerake environment resque:work"
     end
   end
   #...
 end
 </code></pre>
 
-<p>上面的例子是以一條 queue 配一個 worker 的方式執行，若要通通塞一個 worker 就 <code>QUEUE=*</code> 吧 XD</p>
+<p>上面的例子是以一条 queue 配一个 worker 的方式执行，若要通通塞一个 worker 就 <code>QUEUE=*</code> 吧 XD</p>
 
-<p>restart app 後就 restart resque worker 吧!!</p>
+<p>restart app 后就 restart resque worker 吧!!</p>
 
 <p><code>config/deploy.rb</code></p>
 
 <pre><code>after 'deploy:restart', 'deploy:restart_resque'
 </code></pre>
 
-<h4>有關啟動 worker 的參數</h4>
+<h4>有关启动 worker 的參数</h4>
 
-<p>resque 提供了許多參數，讓你可以依照不同的需求執行worker，底下將介紹</p>
+<p>resque 提供了许多參数，让你可以依照不同的需求执行worker，底下將介紹</p>
 
 <ul>
-<li><p>將 worker 執行的結果輸出</p>
+<li><p>將 worker 执行的结果輸出</p>
 
-<p>debug 很好用，但個人還是推薦用 rspec 去 debug 吧 XD</p>
+<p>debug 很好用，但个人還是推荐用 rspec 去 debug 吧 XD</p>
 
 <pre><code>VVERBOSE=1 QUEUE=* bundle exec rake environment resque:work
 </code></pre>
 
-<p>指定 queue (一條或多條)</p>
+<p>指定 queue (一条或多条)</p>
 
-<p>多條可以逗號隔開</p>
+<p>多条可以逗号隔开</p>
 
 <pre><code>QUEUES=file_serve, warm_cache bundle exec rake environment resque:work
 </code></pre></li>
-<li><p>則是所有的 queue</p>
+<li><p>则是所有的 queue</p>
 
 <pre><code>QUEUES=* bundle exec rake environment resque:work
 </code></pre></li>
 </ul>
 
 
-<p>polling 的頻率</p>
+<p>polling 的频率</p>
 
-<p>針對即時性高的需求,以秒計,預設為 5 秒</p>
+<p>针对即时性高的需求,以秒计,预设为 5 秒</p>
 
 <pre><code>INTERVAL=0.1 QUEUE=foo bundle exec rake environment resque:work
 </code></pre>
 
-<p>多個 worker 同步執行</p>
+<p>多个 worker 同步执行</p>
 
 <pre><code>COUNT=5 QUEUE=* bundle exec rake environment resque:workers
 </code></pre>
 
-<p>但官方推薦用 gem “god” 來執行多個 worker
-相關可參考<a href="https://github.com/defunkt/resque/blob/master/examples/god/resque.god">官方範例</a><br/>
-god 也可以用來解決 worker 掛掉的問題，有關 god 的整合, 有空再分享</p>
+<p>但官方推荐用 gem “god” 來执行多个 worker
+相关可參考<a href="https://github.com/defunkt/resque/blob/master/examples/god/resque.god">官方范例</a><br/>
+god 也可以用來解決 worker 挂掉的问題，有关 god 的整合, 有空再分享</p>
 ]]></content>
   </entry>
   

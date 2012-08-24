@@ -5,14 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>友人以上.恋人未满 - Randee’s Octopress Blog</title>
+  <title>Rails中获取url信息的一些方法 - Randee’s Octopress Blog</title>
   <meta name="author" content="Randee">
 
   
-  <meta name="description" content="每个男生身边都有一个不是女朋友的女朋友&#8230; 每个女生身边都有一个不是男朋友的男朋友&#8230;
-你们可能相爱过，也可能喜欢着彼此，
-但是，为了什么原因你们没能在一起？ 也许他为了朋友之间的义气，不能追你。 也许为了顾及家人的意见 ，你们没有在一起。
-也许为了自己的前程，他没有要你等他 &hellip;">
+  <meta name="description" content="如本机我测试域名为: test.blog.zool.it:3000 打开的uri为: /post/Hello-World fullurl为: http://test.blog.zool.it:3000/post/Hello-world 则rails的路由生成一下几个方法 domain( &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -21,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://randeeshen.github.com/blog/2012/08/23/friendship-love/">
+  <link rel="canonical" href="http://randeeshen.github.com/blog/2012/08/25/rails-url-method/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -70,7 +67,7 @@
   
   <header>
     
-      <h1 class="entry-title">友人以上.恋人未满</h1>
+      <h1 class="entry-title">Rails中获取url信息的一些方法</h1>
     
     
       <p class="meta">
@@ -86,62 +83,99 @@
   
 
 
-<time datetime="2012-08-23T15:51:00+08:00" pubdate data-updated="true">Aug 23<span>rd</span>, 2012</time>
+<time datetime="2012-08-25T04:10:00+08:00" pubdate data-updated="true">Aug 25<span>th</span>, 2012</time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><p>每个男生身边都有一个不是女朋友的女朋友&#8230; <br/>
-每个女生身边都有一个不是男朋友的男朋友&#8230;<br/>
-你们可能相爱过，也可能喜欢着彼此，<br/>
-但是，为了什么原因你们没能在一起？</p>
+<div class="entry-content"><p>如本机我测试域名为:  <a href=":;javascripts">test.blog.zool.it:3000</a></p>
 
-<p>也许他为了朋友之间的义气，不能追你。  <br/>
-也许为了顾及家人的意见 ，你们没有在一起。<br/>
-也许为了自己的前程，他没有要你等他。<br/>
-也许是相遇得太早，还不懂得珍惜对方。<br/>
-也许是相遇得太晚，彼此的身边已经有了人在陪着。<br/>
-也许是回头太迟，对方已不再等待。<br/>
-也许是彼此都在捉摸对方的心，而迟迟跨不出界线。</p>
+<p>打开的uri为:  <a href=":;javascripts">/post/Hello-World</a></p>
+
+<p>fullurl为:  <a href=":;javascripts">http://test.blog.zool.it:3000/post/Hello-world</a></p>
+
+<p>则rails的路由生成一下几个方法</p>
+
+<p><code>domain(tld_length = 1)</code> 取得域名</p>
+
+<pre><code>request.domain #=&gt; zool.it request.domain(2) #=&gt; blog.zool.it 
+</code></pre>
+
+<p><code>subdomain(tld_length = 1)</code>, <code>subdomains(tld_length = 1)</code> 取得子域名</p>
+
+<pre><code>request.subdomain #=&gt; "test.blog" request.subdomain(2) #=&gt; "test"
+request.subdomains #=&gt; ["test", "blog"] request.subdomains(2) #=&gt; ["test"] 
+</code></pre>
+
+<p><code>host()</code> 取得主机名</p>
+
+<pre><code>request.host #=&gt; "test.blog.zool.it" 
+</code></pre>
+
+<p><code>host_with_port()</code> 取得带端口的主机名</p>
+
+<pre><code>request.host_with_port #=&gt; "test.blog.zool.it:3000" 
+</code></pre>
 
 <!--more-->
 
 
-<p>不过，即使没在一起，还是保持了朋友的关系。<br/>
-但是只有自己心底清楚<br/>
-对这个人，你比朋友还多了一份关心、一份疼爱！</p>
+<p><code>raw_host_with_port()</code> 代理服务器的主机名和端口</p>
 
-<p>即使不能名正言顺的牵着手逛街，还是可以做无所不谈的朋友。<br/>
-他遇到困难时，你会尽你所能的帮他，不会计较谁欠了谁。</p>
+<pre><code>request.raw_host_with_port #=&gt; "test.blog.zool.it:3000" 
+</code></pre>
 
-<p>每个人这辈子，心中都有过这么一个特别的朋友，<br/>
-不是情侣，单纯得只是朋友。</p>
+<p><code>port()</code> 取得由<code>raw_host_with_port()</code>获得的端口数值</p>
 
-<p>一开始可能不甘心只做朋友，但久了，突然发现这样最好。<br/>
-因为，没爱过，可以减少彼此的伤痛。</p>
+<pre><code>request.port #=&gt; 3000 
+</code></pre>
 
-<p>你宁愿这样关心他，总好过在一起而有天会分手。<br/>
-你宁愿做他的朋友，彼此不会吃醋，才可以真的无所不谈。</p>
+<p><code>port_string()</code> 取得<code>raw_host_with_port()</code>获得的端口文本字符串</p>
 
-<p>特别是这样，你还是知道，他永远会关心你的。<br/>
-很多的感情，都因为一厢情愿，最后连朋友都当不成了。</p>
+<pre><code>request.port_string #=&gt; ":3000" 
+</code></pre>
 
-<p>常常觉得惋惜，可惜了一些本来很好的友情，<br/>
-最后却因为对方的一句喜欢你，<br/>
-如果你没有反应，这段友情似乎也难以维持下去，<br/>
-这也难怪有些人会因此不肯踏出这一步。</p>
+<p><code>protocol()</code> 取得当前使用网络协议</p>
 
-<p>因为这就像是一场赌注，表白了之后  <br/>
-不是成了男女朋友，就是连朋友都当不成了。</p>
+<pre><code>request.protocol #=&gt; "http://" 
+</code></pre>
 
-<p>有些事不是自己能预料的，或许对方不在意，<br/>
-你们还可以是朋友，但却已经不如从前了&#8230;&#8230;<br/>
-做不成男女朋友，当他那个特别的朋友，<br/>
-有什么不好呢？</p>
+<p><code>scheme()</code> 取得网络协议</p>
 
-<p>你心中的这个特别的朋友&#8230;? 是谁呢？</p>
+<pre><code>request.scheme #=&gt; "http" 
+</code></pre>
+
+<p><code>request_uri()</code> request请求的uri地址</p>
+
+<pre><code>request.request_uri #=&gt; "/posts/Hello-World" 
+</code></pre>
+
+<p><code>server_port()</code> 取得由<code>env['SERVER_PORT']</code>返回的端口值</p>
+
+<pre><code>request.server_port #=&gt; "3000" 
+</code></pre>
+
+<p><code>ssl?()</code> 当前是否在是用https加密协议</p>
+
+<pre><code>request.ssl?() #=&gt; false 
+</code></pre>
+
+<p><code>standard_port()</code> 返回网络协议标准端口(http为80, https为443)</p>
+
+<pre><code>request.standard_port #=&gt; 80 
+</code></pre>
+
+<p><code>standard_port?()</code> 判断当前协议是否是标准端口</p>
+
+<pre><code>request.standard_port? #=&gt; false 
+</code></pre>
+
+<p><code>url()</code> 取得当前requset完整url</p>
+
+<pre><code>request.url #=&gt; "http://test.blog.zool.it:3000/posts/Hello-World"
+</code></pre>
 </div>
 
 
@@ -164,7 +198,7 @@
   
 
 
-<time datetime="2012-08-23T15:51:00+08:00" pubdate data-updated="true">Aug 23<span>rd</span>, 2012</time>
+<time datetime="2012-08-25T04:10:00+08:00" pubdate data-updated="true">Aug 25<span>th</span>, 2012</time>
       
 
 
@@ -172,7 +206,7 @@
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://randeeshen.github.com/blog/2012/08/23/friendship-love/" data-via="" data-counturl="http://randeeshen.github.com/blog/2012/08/23/friendship-love/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://randeeshen.github.com/blog/2012/08/25/rails-url-method/" data-via="" data-counturl="http://randeeshen.github.com/blog/2012/08/25/rails-url-method/" >Tweet</a>
   
   
   <div class="g-plusone" data-size="medium"></div>
@@ -183,10 +217,8 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2012/08/22/ruby-block/" title="Previous Post: ruby block的用途和理解">&laquo; ruby block的用途和理解</a>
+        <a class="basic-alignment left" href="/blog/2012/08/24/rails-redis/" title="Previous Post: 在Rails中使用Redis">&laquo; 在Rails中使用Redis</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2012/08/24/rails-redis/" title="Next Post: 在Rails中使用Redis">在Rails中使用Redis &raquo;</a>
       
     </p>
   </footer>
@@ -253,8 +285,8 @@
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://randeeshen.github.com/blog/2012/08/23/friendship-love/';
-        var disqus_url = 'http://randeeshen.github.com/blog/2012/08/23/friendship-love/';
+        var disqus_identifier = 'http://randeeshen.github.com/blog/2012/08/25/rails-url-method/';
+        var disqus_url = 'http://randeeshen.github.com/blog/2012/08/25/rails-url-method/';
         var disqus_script = 'embed.js';
       
     (function () {

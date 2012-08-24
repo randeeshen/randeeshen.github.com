@@ -30,7 +30,7 @@
     </url>
     <url>
         <loc>http://randeeshen.github.com/blog/2012/07/11/resque/</loc>
-        <lastmod>2012-08-23T16:10:50+08:00</lastmod>
+        <lastmod>2012-08-25T05:38:21+08:00</lastmod>
     </url>
     <url>
         <loc>http://randeeshen.github.com/blog/2012/07/23/devise-email/</loc>
@@ -49,11 +49,19 @@
         <lastmod>2012-08-23T15:50:16+08:00</lastmod>
     </url>
     <url>
+        <loc>http://randeeshen.github.com/blog/2012/08/24/rails-redis/</loc>
+        <lastmod>2012-08-25T04:18:06+08:00</lastmod>
+    </url>
+    <url>
+        <loc>http://randeeshen.github.com/blog/2012/08/25/rails-url-method/</loc>
+        <lastmod>2012-08-25T04:16:55+08:00</lastmod>
+    </url>
+    <url>
         <loc>http://randeeshen.github.com/blog/archives/</loc>
-        <lastmod>2012-08-23T16:58:08+08:00</lastmod>
+        <lastmod>2012-08-25T05:38:21+08:00</lastmod>
     </url>
     <url>
         <loc>http://randeeshen.github.com/</loc>
-        <lastmod>2012-08-23T16:58:08+08:00</lastmod>
+        <lastmod>2012-08-25T05:38:21+08:00</lastmod>
     </url>
 </urlset>

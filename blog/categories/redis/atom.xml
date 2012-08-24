@@ -1,0 +1,375 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Redis | Randee’s Octopress Blog]]></title>
+  <link href="http://randeeshen.github.com/blog/categories/redis/atom.xml" rel="self"/>
+  <link href="http://randeeshen.github.com/"/>
+  <updated>2012-08-25T05:42:21+08:00</updated>
+  <id>http://randeeshen.github.com/</id>
+  <author>
+    <name><![CDATA[Randee]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[在Rails中使用Redis]]></title>
+    <link href="http://randeeshen.github.com/blog/2012/08/24/rails-redis/"/>
+    <updated>2012-08-24T13:50:00+08:00</updated>
+    <id>http://randeeshen.github.com/blog/2012/08/24/rails-redis</id>
+    <content type="html"><![CDATA[<p><a href="http://redis.io/">Redis</a> 是一个高性能的key-value数据库，支持strings, sets, sorted sets, lists and hashes 中数据类型。它和Memcache一样，Redis所有的数据运行在内存中。但不同的是，Redis可以将数据持久化到磁盘中。</p>
+
+<h2>Redis 数据类型</h2>
+
+<p>以下是对Redis支持的数据类型的概括：</p>
+
+<p><code>String</code> 字符串是最基本的类型，可以用作计数器（通过incr, incrby, decr, decrby命令）</p>
+
+<p><code>Set</code> 无序无重复的集合</p>
+
+<p><code>Sorted Set</code> 有序无重复的集合</p>
+
+<p><code>List</code> 有序集合的数组，和Ruby中的Array一样。可以通过pop, push实现队列操作</p>
+
+<p><code>Hash</code> 键值对的哈希类型</p>
+
+<p>Redis的命令可以参考《<a href="http://redis.io/commands">Redis commands</a>》，使用场景可以参考《<a href="http://blog.nosqlfan.com/html/2925.html">redis 适用场景与实现</a>》。</p>
+
+<!--more-->
+
+
+<h2>安装Redis</h2>
+
+<p>安装非常简单，</p>
+
+<pre><code>curl -O http://redis.googlecode.com/files/redis-2.2.2.tar.gz
+tar xzf redis-2.2.2.tar.gz
+cd redis-2.2.2
+make
+cp src/redis-server src/redis-cli /usr/bin
+</code></pre>
+
+<h2>启动Redis服务</h2>
+
+<p>如果在本地环境使用redis-server，可以通过以下命令来启动，该命令使用默认的配置。</p>
+
+<pre><code>redis-server
+</code></pre>
+
+<p>如果希望使用自己的配置文件，可以加入path</p>
+
+<pre><code>redis-server /path/to/redis.conf
+</code></pre>
+
+<h2>Redis 和 Rails</h2>
+
+<p>使用Ezra Zygmuntowicz开发的gem——redis-rb。</p>
+
+<p>第一步，在<code>Gemfile</code>中加入redis-rb</p>
+
+<pre><code>gem 'redis', '2.1.1'
+</code></pre>
+
+<p>通过<code>Bundler</code>安装</p>
+
+<pre><code>bundle install
+</code></pre>
+
+<p>最后，创建<code>config/initializers/redis.rb</code>进行以下配置</p>
+
+<pre><code>$redis = Redis.new(:host =&gt; 'localhost', :port =&gt; 6379)
+</code></pre>
+
+<p>该命令将使用默认的端口6379实例化redis，并设定全局变量 <code>$redis</code>。</p>
+
+<p>让我们检查一下是否一切顺利，启动<code>rails console</code></p>
+
+<pre><code>&gt; $redis
+=&gt; #&lt;Redis client v2.1.1 connected to redis://localhost:6379/0 (Redis
+v2.2.2)&gt; 
+&gt; $redis.set('chunky', 'bacon')
+=&gt; "OK" 
+&gt; $redis.get('chunky')
+=&gt; "bacon"
+</code></pre>
+
+<h2>和Rails结合的例子</h2>
+
+<p>用户关系（User Friendships）</p>
+
+<p>下面介绍使用<code>ActiveRecord</code>和<code>Redis</code>结合管理用户关系。采用<code>sets</code>来存储关系数据。</p>
+
+<pre><code># User Model
+class User &lt; ActiveRecord::Base
+  # follow a user 关注某个用户
+  def follow!(user)
+    $redis.multi do
+      $redis.sadd(self.redis_key(:following), user.id)
+      $redis.sadd(user.redis_key(:followers), self.id)
+    end
+  end
+
+  # unfollow a user 取消关注某个用户
+  def unfollow!(user)
+    $redis.multi do
+      $redis.srem(self.redis_key(:following), user.id)
+      $redis.srem(user.redis_key(:followers), self.id)
+    end
+  end
+
+  # users that self follows 我的粉丝
+  def followers
+    user_ids = $redis.smembers(self.redis_key(:followers))
+    User.where(:id =&gt; user_ids)
+  end
+
+  # users that follow self 我的关注
+  def following
+    user_ids = $redis.smembers(self.redis_key(:following))
+    User.where(:id =&gt; user_ids)
+  end
+
+  # users who follow and are being followed by self 互相关注
+  def friends
+    user_ids = $redis.sinter(self.redis_key(:following), self.redis_key(:followers))
+    User.where(:id =&gt; user_ids)
+  end
+
+  # does the user follow self 是否是我的粉丝
+  def followed_by?(user)
+    $redis.sismember(self.redis_key(:followers), user.id)
+  end
+
+  # does self follow user 是否关注某个用户
+  def following?(user)
+    $redis.sismember(self.redis_key(:following), user.id)
+  end
+
+  # number of followers 关注总数
+  def followers_count
+    $redis.scard(self.redis_key(:followers))
+  end
+
+  # number of users being followed 粉丝总数
+  def following_count
+    $redis.scard(self.redis_key(:following))
+  end
+
+  # helper method to generate redis keys
+  def redis_key(str)
+    "user:#{self.id}:#{str}"
+  end
+end
+</code></pre>
+
+<p>使用例子：</p>
+
+<pre><code>&gt; %w[Alfred Bob].each{|name| User.create(:name =&gt; name)}
+=&gt; ['Alfred', 'Bob']
+&gt; a, b = User.all
+=&gt; [#&lt;User id: 1, name: "Alfred"&gt;, #&lt;User id: 2, name: "Bob"&gt;] 
+&gt; a.follow!(b)
+=&gt; [1, 1] 
+&gt; a.following?(b)
+=&gt; true 
+&gt; b.followed_by?(a)
+=&gt; true 
+&gt; a.following
+=&gt; [#&lt;User id: 2, name: "Bob"&gt;] 
+&gt; b.followers
+=&gt; [#&lt;User id: 1, name: "Alfred"&gt;]
+&gt; a.friends
+=&gt; [] 
+&gt; b.follow!(a)
+=&gt; [1, 1] 
+&gt; a.friends
+=&gt; [#&lt;User id: 2, name: "Bob"&gt;] 
+&gt; b.friends
+=&gt; [#&lt;User id: 1, name: "Alfred"&gt;]
+</code></pre>
+
+<p>Redis使用起来非常简单。在管理用户关系的中，共使用了<code>sadd</code>, <code>scem</code>, <code>smembers</code>, <code>sinter</code>, <code>scard</code>, <code>sismember</code>, <code>mutil</code>，简单说明如下：</p>
+
+<p><code>sadd</code> 将一个或多个member元素加入到集合key当中，已经存在于集合的member元素将被忽略。</p>
+
+<p><code>srem</code> 移除集合key中的一个或多个member元素，不存在的member元素会被忽略。</p>
+
+<p><code>smembers</code> 返回集合key中的所有成员。</p>
+
+<p><code>sinter</code> 返回一个集合的全部成员，该集合是所有给定集合的交集。</p>
+
+<p><code>scard</code> 返回集合key的基数(集合中元素的数量)。</p>
+
+<p><code>sismember</code> 判断member元素是否是集合key的成员。</p>
+
+<p><code>mutil</code> 事务管理，使多条指令成为原子操作</p>
+
+<h2>排行榜（hign score table）</h2>
+
+<p>我们可以通过Redis的<a href="http://redis.io/commands#sorted_set">sorted sets</a>构建一个排行榜。</p>
+
+<pre><code>class User &lt; ActiveRecord::Base
+  # log high score
+  def scored(score)
+    if score &gt; self.high_score
+      $redis.zadd("highscores", score, self.id)
+    end
+  end
+
+  # table rank
+  def rank
+    $redis.zrevrank("highscores", self.id) + 1
+  end
+
+  # high score
+  def high_score
+    $redis.zscore("highscores", self.id).to_i
+  end
+
+  # load top 3 users
+  def self.top_3
+    $redis.zrevrange("highscores", 0, 2).map{|id| User.find(id)}
+  end
+end
+</code></pre>
+
+<p>使用例子如下：</p>
+
+<pre><code>&gt; a, b, c, d = User.limit(4)
+=&gt; [#&lt;User id: 1, name: "Alfred"&gt;, #&lt;User id: 2, name: "Bob"&gt;, #&lt;User id: 3, name: "Charlie"&gt;, #&lt;User id: 4, name: "Derek""&gt;] 
+&gt; a.scored 100
+=&gt; true 
+&gt; b.scored 500
+=&gt; true 
+&gt; c.scored 25
+=&gt; true 
+&gt; d.scored 10000
+ =&gt; true 
+&gt; d.high_score
+ =&gt; 10000 
+&gt; d.rank
+=&gt; 1 
+&gt; c.rank
+=&gt; 4 
+&gt; c.scored 5000000
+=&gt; false 
+&gt; c.high_score
+=&gt; 5000000 
+&gt; c.rank
+=&gt; 1 
+&gt; User.top_3
+=&gt; [#&lt;User id: 3, name: "Charlie"&gt;, #&lt;User id: 4, name: "Derek"&gt;, #&lt;User id: 2, name: "Bob"&gt;] 
+</code></pre>
+
+<p>我们通过<code>zadd</code>, <code>zrevrank</code>, <code>zrevrange</code>, <code>zscore</code>构建了排行榜，简单说明如下：</p>
+
+<p><code>zadd</code> 将一个或多个member元素及其score值加入到有序集key当中。</p>
+
+<p><code>zrevrank</code> 返回有序集key中成员member的排名。其中有序集成员按score值递减(从大到小)排序。</p>
+
+<p><code>zrevrange</code> 返回有序集key中，指定区间内的成员。</p>
+
+<p><code>zscore</code> 返回有序集key中，成员member的score值。</p>
+
+<h2>更多的例子</h2>
+
+<ul>
+<li><a href="http://www.paperplanes.de/2010/2/16/a_collection_of_redis_use_cases.html">A Collection Of Redis Use Cases</a></li>
+<li><a href="http://nosql.mypopescu.com/post/836086276/presentation-redis-persistence-power-or-redis-use">Presentation: Redis - Persistence Power or Redis Use Cases</a></li>
+</ul>
+
+
+<h2>将Redis作为Rails的缓存存储</h2>
+
+<p>通过Luca Guidi的<a href=":;javascripts">Redis Store</a>，可方便的将Redis作为缓存储存。Redis store为Rails框架提供了<code>Rack::Session</code>, <code>Rack::Cache</code>, <code>I18n</code>和<code>Redis缓存</code>。它可以用来缓存存储、Session存储，且与Rack::Cache集成的很好。</p>
+
+<pre><code>https://github.com/jodosha/redis-store
+</code></pre>
+
+<p>在<code>Gemfile</code>中加入<code>redis-store</code></p>
+
+<pre><code>gem 'redis-store', '1.0.0.beta4'
+</code></pre>
+
+<p>然后，通过<code>Bundler</code>安装</p>
+
+<pre><code>bundle install
+</code></pre>
+
+<p>接着在<code>config/environments/production.rb</code>更新配置：</p>
+
+<pre><code>config.cache_store = :redis_store
+</code></pre>
+
+<p>就这样，Rails应用将使用Redis作为缓存存储</p>
+
+<h2>监控Redis</h2>
+
+<p>如果在自己的服务器上使用Redis，且在redis.conf中设置了daemonize为yes，且需要对其进行监控。下方是使用Monit和God的例子：</p>
+
+<h3>Monit</h3>
+
+<pre><code>check process redis
+  start program = "/usr/bin/redis-server /etc/redis/redis.conf"
+  stop program = "/usr/bin/redis-cli -p 6379 shutdown"
+  with pidfile /var/run/redis.pid
+  group redis
+</code></pre>
+
+<h3>God</h3>
+
+<pre><code>%w{6379}.each do |port|
+  God.watch do |w| 
+    w.name = "redis" 
+    w.interval = 30.seconds 
+
+    w.start = "/usr/bin/redis-server /etc/redis/redis.conf" 
+    w.stop = "/usr/bin/redis-cli -p 6379 shutdown" 
+    w.restart = "#{w.stop} &amp;&amp; #{w.start}" 
+
+    w.start_grace = 10.seconds 
+    w.restart_grace = 10.seconds 
+
+    w.start_if do |start| 
+      start.condition(:process_running) do |c| 
+        c.interval = 5.seconds 
+        c.running = false 
+      end 
+    end 
+  end
+end
+</code></pre>
+
+<h2>Redis和Unix Sockets</h2>
+
+<p>Redis 2.2起引入和unix sockets通信的机制。要使用该功能，就要在<code>redis.conf</code>里将下面的配置取消注释：</p>
+
+<pre><code>unixsocket /tmp/redis.sock
+</code></pre>
+
+<p>修改<code>config/initializers/redis.rb</code>以链接到应用中的Redis：</p>
+
+<pre><code>$redis = Redis.new(:path =&gt; "/tmp/redis.sock")
+</code></pre>
+
+<h2>Redis相关Gems</h2>
+
+<p><a href="https://github.com/nateware/redis-objects">Redis objects</a>可以将redis数据类型映射为Ruby object，是ORMs非常的替代品。</p>
+
+<p><a href="https://github.com/defunkt/resque">Resque</a>是基于Redis的管理后台任务，它可以建立多个队列并设置优先级。 在Github使用并开源，可以通过<a href="https://github.com/blog/542-introducing-resque">这篇介绍</a>了解Resque。</p>
+
+<p><a href="https://github.com/assaf/vanity">Vanity</a>是试验驱动的开发框架，它为Rails程序提供了A/B测试的功能，并通过Grab与Google Analytics集成。</p>
+
+<p><a href="https://github.com/soveran/ohm">Ohm</a>将Redis作为数据存储，它提供验证扩展，并有很好的性能。</p>
+
+<p><a href="https://github.com/jamesgolick/rollout">Rollout</a>基于Redis，用户产品小流量测试或灰度发布。</p>
+
+<p><a href="https://github.com/seatgeek/soulmate">Soulmate</a>提供了自动完成（Autocomplete）的通用解决方案。它基于Redis的sorted set，可根据输入的部分单词索引出最相符的选项。</p>
+
+<p>中文原文：<a href="http://jokry.com/blog/2012/05/09/using-redis-with-ruby-on-rails/">http://jokry.com/blog/2012/05/09/using-redis-with-ruby-on-rails/</a>
+英文原文：<a href="http://jimneath.org/2011/03/24/using-redis-with-ruby-on-rails.html">http://jimneath.org/2011/03/24/using-redis-with-ruby-on-rails.html</a></p>
+]]></content>
+  </entry>
+  
+</feed>

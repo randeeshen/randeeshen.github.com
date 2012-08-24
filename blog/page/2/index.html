@@ -9,7 +9,7 @@
   <meta name="author" content="Randee">
 
   
-  <meta name="description" content="风格是从伟大事物中分离出的美好事物。 &#8211; Bozhidar Batsov 这份指南目的于演示一整套 Rails 3 开发的风格惯例及最佳实践。这是一份与由现存社群所驱动的Ruby 编码风格指南互补的指南。 开发 RAILS 应用程序 配置 把惯用的初始化代码放在 config/ &hellip;">
+  <meta name="description" content="本文来源于酷壳网！ 在这个世界上，有数百万的人热衷于软件开发，他们有很多名字，如：软件工程师，程序员，编码人，开发人员。经过一段时间后，这些人也许能够成为一个优秀的编码人员，他们会非常熟悉如何用计算机语言来完成自己的工作。但是，如果你要成为一个优秀的程序员，你还需要注意几件事， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -64,6 +64,123 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012/06/10/programmers-good-habit/">优秀程序员的十个习惯</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-06-10T19:23:00+08:00" pubdate data-updated="true">Jun 10<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><blockquote><p>本文来源于<a href="http://coolshell.cn/articles/222.html">酷壳网</a>！</p></blockquote>
+
+<p>在这个世界上，有数百万的人热衷于软件开发，他们有很多名字，如：软件工程师，程序员，编码人，开发人员。经过一段时间后，这些人也许能够成为一个优秀的编码人员，他们会非常熟悉如何用计算机语言来完成自己的工作。但是，如果你要成为一个优秀的程序员，你还需要注意几件事，如果你能让下百十上条目成为你的习惯，那么你才能真正算得上是优秀程序员。</p>
+
+<ol>
+<li><p><a href=""><strong>学无止境。</strong></a>
+就算是你有了10年以上的程序员经历，你也得要使劲地学习，因为你在计算机这个充满一创造力的领域，每天都会有很多很多的新事物出现。你需要跟上时代的步伐。你需要去了解新的程序语言，以及了解正在发展中的程序语言，以及一些编程框架。还需要去阅读一些业内的新闻，并到一些热门的社区去参与在线的讨论，这样你才能明白和了解整个软件开发的趋势。在国内，一些著名的社区例如：CSDN，ITPUB，CHINAUINX等等，在国外，建议你经常上一上digg.com去看看各种BLOG的聚合。</p></li>
+<li><p><a href=""><strong>掌握多种语言。</strong></a>
+程序语言总是有其最适合的领域。当你面对需要解决的问题时，你需要找到一个最适合的语言来解决这些问题。比如，如果你需要性能，可能C/C++是首选，如果你需要跨平台，可能Java是首选，如果你要写一个Web上的开发程序，那么PHP，ASP，Ajax，JSP可能会是你的选择，如果你要处理一些文本并和别的应用交互，可能Perl，Python会是最好的。所以，花一些时间去探索一下其它你并熟悉的程序语言，能让你的眼界变宽，因为你被武装得更好，你思考问题也就更为全面，这对于自己和项目都会有好的帮助。</p></li>
+</ol>
+
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2012/06/10/programmers-good-habit/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012/06/08/rails-skills/">42 个你不知道的 Rails 技巧</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-06-08T18:02:00+08:00" pubdate data-updated="true">Jun 8<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>The Database</h2>
+
+<h3>Tip 1: Run From A Single File 可以单文件运行</h3>
+
+<p><a href="https://github.com/artemave/thesmallestrailsapp.com"><em>source</em></a></p>
+
+<pre><code>%w(action_controller/railtie coderay).map &amp;method(:require)
+
+run TheSmallestRailsApp ||= Class.new(Rails::Application) {
+  config.secret_token = routes.append { root to: 'hello#world' }.inspect
+  initialize!
+}
+
+class HelloController &lt; ActionController::Base
+  def world
+    render inline: "
+      &lt;!DOCTYPE html&gt;
+      &lt;title&gt;The Smallest Rails App&lt;/title&gt;
+      &lt;h3&gt;I am the smallest rails app!&lt;/h3&gt;
+      &lt;p&gt;Here is my source code:&lt;/p&gt;
+      #{CodeRay.scan_file(__FILE__, :ruby).div(line_numbers: :table)}
+      &lt;a href='https://github.com/artemave/thesmallestrailsapp.com'&gt;Make me smaller&lt;/a&gt;
+    "
+  end
+end
+</code></pre>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2012/06/08/rails-skills/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -222,6 +339,14 @@ puts 'Hi' [1, 2, 3].each { |e| puts e }
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2012/08/25/rails-url-method/">Rails中获取url信息的一些方法</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/08/24/rails-redis/">在Rails中使用Redis</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2012/08/23/friendship-love/">友人以上.恋人未满</a>
       </li>
     
@@ -231,14 +356,6 @@ puts 'Hi' [1, 2, 3].each { |e| puts e }
     
       <li class="post">
         <a href="/blog/2012/08/22/CoffeeScript/">CoffeeScript 详解</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2012/07/23/devise-email/">devise 注册激活邮件</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2012/07/11/resque/">用 resque 實作背景作業</a>
       </li>
     
   </ul>
