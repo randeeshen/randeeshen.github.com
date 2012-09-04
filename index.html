@@ -9,7 +9,11 @@
   <meta name="author" content="Randee">
 
   
-  <meta name="description" content="如本机我测试域名为: test.blog.zool.it:3000 打开的uri为: /post/Hello-World fullurl为: http://test.blog.zool.it:3000/post/Hello-world 则rails的路由生成一下几个方法 domain( &hellip;">
+  <meta name="description" content="bootstrap-rails 这个大家应该众所周知
+http://bootswatch.com/ 非常酷
+http://addyosmani.github.com/jquery-ui-bootstrap/
+http://www.sproutmobi.com/
+http://www. &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -64,6 +68,74 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012/08/28/interface-ui-recommend/">界面ui推荐</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-08-28T21:32:00+08:00" pubdate data-updated="true">Aug 28<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><ul>
+<li><a href="http://twitter.github.com/bootstrap/">bootstrap-rails</a>     这个大家应该众所周知</li>
+<li><a href="http://bootswatch.com/">http://bootswatch.com/</a>            非常酷</li>
+<li><a href="http://addyosmani.github.com/jquery-ui-bootstrap/">http://addyosmani.github.com/jquery-ui-bootstrap/</a></li>
+<li><a href="http://www.sproutmobi.com/">http://www.sproutmobi.com/</a></li>
+<li><a href="http://www.breakingnews.com/">http://www.breakingnews.com/</a></li>
+<li><a href="http://wrapbootstrap.com/">http://wrapbootstrap.com/</a>      可惜收费</li>
+<li><a href="http://ajkochanowicz.github.com/Kickstrap/index.html">http://ajkochanowicz.github.com/Kickstrap/index.html</a>  这个也很酷</li>
+</ul>
+
+
+<hr />
+
+<p></br></p>
+
+<ul>
+<li><p>bootstrapAJAX搜索栏插件<br/>
+<a href="http://coenraets.org/blog/2012/02/sample-app-with-backbone-js-and-twitter-bootstrap/">http://coenraets.org/blog/2012/02/sample-app-with-backbone-js-and-twitter-bootstrap/</a></p></li>
+<li><p>bootstrap日期获取插件  <br/>
+<a href="http://www.eyecon.ro/bootstrap-datepicker/">http://www.eyecon.ro/bootstrap-datepicker/</a></p></li>
+<li><p>jquery-ui-bootstrap <br/>
+<a href="https://github.com/addyosmani/jquery-ui-bootstrap/">https://github.com/addyosmani/jquery-ui-bootstrap/</a></p></li>
+<li><p>一个很好看的bootstrap主题 <br/>
+<a href="http://fuel.danyduchaine.com/">http://fuel.danyduchaine.com/</a></p></li>
+<li><p>Adding Twitter&#8217;s Bootstrap CSS to your Rails app <br/>
+<a href="http://www.opinionatedprogrammer.com/2011/11/twitter-bootstrap-on-rails/">http://www.opinionatedprogrammer.com/2011/11/twitter-bootstrap-on-rails/</a></p></li>
+</ul>
+
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2012/08/28/interface-ui-recommend/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -629,70 +701,6 @@ end
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/07/04/git-log/">Git显示漂亮日志的小技巧</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-07-04T17:05:00+08:00" pubdate data-updated="true">Jul 4<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>在网上无意中看到这篇文章，决定copy下来&#8211;XD&#8230;   <br/>
-原文：<a href="http://garmoncheg.blogspot.com/2012/06/pretty-git-log.html">http://garmoncheg.blogspot.com/2012/06/pretty-git-log.html</a> （墙）</p>
-
-<p>Git的传统log如下所示，你稀饭吗？</p>
-
-<p><img src="/images/2012-07-04-git-log.png" alt="Alt text" /></p>
-
-<p>看看下面这个你稀不稀饭？</p>
-
-<p><img src="/images/2012-07-04-git-lg.png" alt="Alt text" /></p>
-
-<p>要做到这样，命令行如下：</p>
-
-<pre><code>git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)&lt;%an&gt;%Creset' --abbrev-commit --   
-</code></pre>
-
-<p>这样有点长了，我们可以这样：</p>
-
-<pre><code>git config --global alias.lg "log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)&lt;%an&gt;%Creset' --abbrev-commit --"  
-</code></pre>
-
-<p>然后，我们就可以使用下面的命令查看git日志了：</p>
-
-<pre><code>git lg
-</code></pre>
-
-<p>如果你想看看<code>git log
-–pretty=format</code>的参数，你可以看看
-<a href="http://git-scm.com/book/zh/Git-%E5%9F%BA%E7%A1%80-%E6%9F%A5%E7%9C%8B%E6%8F%90%E4%BA%A4%E5%8E%86%E5%8F%B2"><em>这篇文章</em></a>。</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -708,6 +716,10 @@ end
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2012/08/28/interface-ui-recommend/">界面ui推荐</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2012/08/25/rails-url-method/">Rails中获取url信息的一些方法</a>
       </li>
     
@@ -721,10 +733,6 @@ end
     
       <li class="post">
         <a href="/blog/2012/08/22/ruby-block/">ruby block的用途和理解</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2012/08/22/CoffeeScript/">CoffeeScript 详解</a>
       </li>
     
   </ul>

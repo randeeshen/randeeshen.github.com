@@ -4,7 +4,7 @@
   <title><![CDATA[Randee’s Octopress Blog]]></title>
   <link href="http://randeeshen.github.com/atom.xml" rel="self"/>
   <link href="http://randeeshen.github.com/"/>
-  <updated>2012-08-25T05:42:21+08:00</updated>
+  <updated>2012-09-04T14:47:30+08:00</updated>
   <id>http://randeeshen.github.com/</id>
   <author>
     <name><![CDATA[Randee]]></name>
@@ -12,6 +12,67 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[界面ui推荐]]></title>
+    <link href="http://randeeshen.github.com/blog/2012/08/28/interface-ui-recommend/"/>
+    <updated>2012-08-28T21:32:00+08:00</updated>
+    <id>http://randeeshen.github.com/blog/2012/08/28/interface-ui-recommend</id>
+    <content type="html"><![CDATA[<ul>
+<li><a href="http://twitter.github.com/bootstrap/">bootstrap-rails</a>     这个大家应该众所周知</li>
+<li><a href="http://bootswatch.com/">http://bootswatch.com/</a>            非常酷</li>
+<li><a href="http://addyosmani.github.com/jquery-ui-bootstrap/">http://addyosmani.github.com/jquery-ui-bootstrap/</a></li>
+<li><a href="http://www.sproutmobi.com/">http://www.sproutmobi.com/</a></li>
+<li><a href="http://www.breakingnews.com/">http://www.breakingnews.com/</a></li>
+<li><a href="http://wrapbootstrap.com/">http://wrapbootstrap.com/</a>      可惜收费</li>
+<li><a href="http://ajkochanowicz.github.com/Kickstrap/index.html">http://ajkochanowicz.github.com/Kickstrap/index.html</a>  这个也很酷</li>
+</ul>
+
+
+<hr />
+
+<p></br></p>
+
+<ul>
+<li><p>bootstrapAJAX搜索栏插件<br/>
+<a href="http://coenraets.org/blog/2012/02/sample-app-with-backbone-js-and-twitter-bootstrap/">http://coenraets.org/blog/2012/02/sample-app-with-backbone-js-and-twitter-bootstrap/</a></p></li>
+<li><p>bootstrap日期获取插件  <br/>
+<a href="http://www.eyecon.ro/bootstrap-datepicker/">http://www.eyecon.ro/bootstrap-datepicker/</a></p></li>
+<li><p>jquery-ui-bootstrap <br/>
+<a href="https://github.com/addyosmani/jquery-ui-bootstrap/">https://github.com/addyosmani/jquery-ui-bootstrap/</a></p></li>
+<li><p>一个很好看的bootstrap主题 <br/>
+<a href="http://fuel.danyduchaine.com/">http://fuel.danyduchaine.com/</a></p></li>
+<li><p>Adding Twitter&#8217;s Bootstrap CSS to your Rails app <br/>
+<a href="http://www.opinionatedprogrammer.com/2011/11/twitter-bootstrap-on-rails/">http://www.opinionatedprogrammer.com/2011/11/twitter-bootstrap-on-rails/</a></p></li>
+</ul>
+
+
+<!--more-->
+
+
+<ul>
+<li><p>一个优秀设计师的个人主页（bootstrap） <br/>
+<a href="http://danyduchaine.com/">http://danyduchaine.com/</a></p></li>
+<li><p>Twitter Bootstrap 框架介绍 <br/>
+<a href="http://blog.cyj.me/archives/84633">http://blog.cyj.me/archives/84633</a></p></li>
+<li><p>jQuery Tools Form Validator and Twitter Bootstrap（轻量级） <br/>
+<a href="http://wezfurlong.org/blog/2011/dec/jquery-tools-form-validator-and-twitter-bootstrap/">http://wezfurlong.org/blog/2011/dec/jquery-tools-form-validator-and-twitter-bootstrap/</a></p></li>
+<li><p>在该网站登录你的主页，可以看到在各种移动设备上显示的效果 <br/>
+<a href="http://www.responsinator.com/">http://www.responsinator.com/</a></p></li>
+<li><p>web developer tools &amp; Resources(看看有没有你想要的） <br/>
+<a href="http://codevisually.com/">http://codevisually.com/</a></p></li>
+<li><p>Twitter Bootstrap Basics（视频教程）。 <br/>
+<a href="http://railscasts.com/episodes/328-twitter-bootstrap-basics">http://railscasts.com/episodes/328-twitter-bootstrap-basics</a></p></li>
+<li><p>20个令人恐怖的js导航 <br/>
+<a href="http://developer.51cto.com/art/201011/233998.htm">http://developer.51cto.com/art/201011/233998.htm</a></p></li>
+<li><p>20个JQuery插件 <br/>
+<a href="http://developer.51cto.com/art/201011/232679.htm">http://developer.51cto.com/art/201011/232679.htm</a></p></li>
+<li><p>效果帅爆了的 jQuery Modal 窗口<br/>
+<a href="http://labs.voronianski.com/jquery.avgrund.js/">http://labs.voronianski.com/jquery.avgrund.js/</a></p></li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Rails中获取url信息的一些方法]]></title>
